@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210806223019) do
+ActiveRecord::Schema.define(version: 20210806230325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,17 @@ ActiveRecord::Schema.define(version: 20210806223019) do
   end
 
   add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
+
+  create_table "orders", force: :cascade do |t|
+    t.string   "table",                                null: false
+    t.string   "status",        default: "registrado", null: false
+    t.integer  "work_shift_id"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "orders", ["table"], name: "index_orders_on_table", using: :btree
+  add_index "orders", ["work_shift_id"], name: "index_orders_on_work_shift_id", using: :btree
 
   create_table "products", force: :cascade do |t|
     t.string   "name",                       null: false
@@ -90,6 +101,7 @@ ActiveRecord::Schema.define(version: 20210806223019) do
   add_index "work_shifts", ["product_id"], name: "index_work_shifts_on_product_id", using: :btree
   add_index "work_shifts", ["start_at"], name: "index_work_shifts_on_start_at", using: :btree
 
+  add_foreign_key "orders", "work_shifts"
   add_foreign_key "products", "categories"
   add_foreign_key "restaurants", "users"
   add_foreign_key "work_shifts", "products"
