@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210806230325) do
+ActiveRecord::Schema.define(version: 20210806231240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,18 @@ ActiveRecord::Schema.define(version: 20210806230325) do
   end
 
   add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
+
+  create_table "order_products", force: :cascade do |t|
+    t.integer  "quantity",   default: 0, null: false
+    t.text     "note"
+    t.integer  "order_id"
+    t.integer  "product_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "order_products", ["order_id"], name: "index_order_products_on_order_id", using: :btree
+  add_index "order_products", ["product_id"], name: "index_order_products_on_product_id", using: :btree
 
   create_table "orders", force: :cascade do |t|
     t.string   "table",                                null: false
@@ -101,6 +113,8 @@ ActiveRecord::Schema.define(version: 20210806230325) do
   add_index "work_shifts", ["product_id"], name: "index_work_shifts_on_product_id", using: :btree
   add_index "work_shifts", ["start_at"], name: "index_work_shifts_on_start_at", using: :btree
 
+  add_foreign_key "order_products", "orders"
+  add_foreign_key "order_products", "products"
   add_foreign_key "orders", "work_shifts"
   add_foreign_key "products", "categories"
   add_foreign_key "restaurants", "users"
