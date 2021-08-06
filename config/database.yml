@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: db
+  username: postgres
+  password: password
+  pool: 5
+
+development:
+  <<: *default
+  database: ordering-system_development
+
+test:
+  <<: *default
+  database: ordering-system_test
+
+# production:
+#   <<: *default
+#   database: ordering-system_production
+#   username: ordering-system
+#   password: <%= ENV['ORDERING-SYSTEM_DATABASE_PASSWORD'] %>
