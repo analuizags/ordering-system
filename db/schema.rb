@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210806222117) do
+ActiveRecord::Schema.define(version: 20210806223019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,21 @@ ActiveRecord::Schema.define(version: 20210806222117) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "work_shifts", force: :cascade do |t|
+    t.string   "name",                                       null: false
+    t.datetime "start_at",   default: '2021-08-06 23:09:07', null: false
+    t.datetime "end_at"
+    t.integer  "product_id"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "work_shifts", ["end_at"], name: "index_work_shifts_on_end_at", using: :btree
+  add_index "work_shifts", ["name"], name: "index_work_shifts_on_name", using: :btree
+  add_index "work_shifts", ["product_id"], name: "index_work_shifts_on_product_id", using: :btree
+  add_index "work_shifts", ["start_at"], name: "index_work_shifts_on_start_at", using: :btree
+
   add_foreign_key "products", "categories"
   add_foreign_key "restaurants", "users"
+  add_foreign_key "work_shifts", "products"
 end
