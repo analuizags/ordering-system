@@ -100,17 +100,17 @@ ActiveRecord::Schema.define(version: 20210806231240) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "work_shifts", force: :cascade do |t|
-    t.string   "name",                                       null: false
-    t.datetime "start_at",   default: '2021-08-06 23:09:07', null: false
+    t.string   "name",                                          null: false
+    t.datetime "start_at",      default: '2021-08-07 00:59:28', null: false
     t.datetime "end_at"
-    t.integer  "product_id"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.integer  "restaurant_id"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
   end
 
   add_index "work_shifts", ["end_at"], name: "index_work_shifts_on_end_at", using: :btree
   add_index "work_shifts", ["name"], name: "index_work_shifts_on_name", using: :btree
-  add_index "work_shifts", ["product_id"], name: "index_work_shifts_on_product_id", using: :btree
+  add_index "work_shifts", ["restaurant_id"], name: "index_work_shifts_on_restaurant_id", using: :btree
   add_index "work_shifts", ["start_at"], name: "index_work_shifts_on_start_at", using: :btree
 
   add_foreign_key "order_products", "orders"
@@ -118,5 +118,5 @@ ActiveRecord::Schema.define(version: 20210806231240) do
   add_foreign_key "orders", "work_shifts"
   add_foreign_key "products", "categories"
   add_foreign_key "restaurants", "users"
-  add_foreign_key "work_shifts", "products"
+  add_foreign_key "work_shifts", "restaurants"
 end

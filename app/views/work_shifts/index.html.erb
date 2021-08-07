@@ -8,7 +8,7 @@
       <th>Name</th>
       <th>Start at</th>
       <th>End at</th>
-      <th>Product</th>
+      <th>Restaurant</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -19,7 +19,7 @@
         <td><%= work_shift.name %></td>
         <td><%= work_shift.start_at %></td>
         <td><%= work_shift.end_at %></td>
-        <td><%= work_shift.product %></td>
+        <td><%= work_shift.restaurant %></td>
         <td><%= link_to 'Show', work_shift %></td>
         <td><%= link_to 'Edit', edit_work_shift_path(work_shift) %></td>
         <td><%= link_to 'Destroy', work_shift, method: :delete, data: { confirm: 'Are you sure?' } %></td>

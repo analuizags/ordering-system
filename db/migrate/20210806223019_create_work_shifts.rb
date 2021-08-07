@@ -2,9 +2,9 @@ class CreateWorkShifts < ActiveRecord::Migration
   def change
     create_table :work_shifts do |t|
       t.string :name, null: false
-      t.datetime :start_at, null: false, default: Time.current
+      t.datetime :start_at, null: false
       t.datetime :end_at
-      t.references :product, index: true, foreign_key: true
+      t.references :restaurant, index: true, foreign_key: true
 
       t.timestamps null: false
     end

@@ -69,6 +69,6 @@ class WorkShiftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def work_shift_params
-      params.require(:work_shift).permit(:name, :start_at, :end_at, :product_id)
+      params.require(:work_shift).permit(:name, :start_at, :end_at, :restaurant_id)
     end
 end
