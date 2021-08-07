@@ -1,3 +1,3 @@
 class Order < ActiveRecord::Base
-  belongs_to :workShift
+  belongs_to :work_shift
 end
