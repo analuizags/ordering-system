@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :table %><br>
-    <%= f.text_field :table %>
+    <%= f.select :table, @tables %>
   </div>
   <div class="field">
     <%= f.label :status %><br>
@@ -22,7 +22,36 @@
   <div class="field">
     <%= f.label :work_shift_id %><br>
     <%= f.text_field :work_shift_id %>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :products %><br><br>
+
+    <table border=1>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Unit Price</th>
+          <th>Quantity</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @products.each do |product| %>
+          <%= f.fields_for :order_products do |order_product| %>
+            <tr>
+              <td><%= product.name %></td>
+              <td><%= product.price %></td>
+              <td><%= order_product.number_field :quantity %></td>
+              <td><%= order_product.text_area :note %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
   </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

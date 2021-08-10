@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_products, only: [:new, :edit, :update, :create]
+  before_action :set_tables, only: [:new, :edit, :update, :create]
 
   # GET /orders
   # GET /orders.json
@@ -62,6 +64,16 @@ class OrdersController < ApplicationController
   end
 
   private
+    def set_products
+      @products = Product.all
+    end
+
+    def set_tables
+      @tables = []
+      (1..40).each {|n| @tables << "Mesa #{sprintf('%02d', n)}"}
+      @tables
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
@@ -69,6 +81,7 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:table, :status, :work_shift_id)
+      params.require(:order).permit(:table, :status, :work_shift_id,
+        order_product_attributes: [:quantity, :note])
     end
 end
