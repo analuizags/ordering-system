@@ -1,15 +1,21 @@
 Rails.application.routes.draw do
-  resources :order_products
-  resources :orders
-  resources :work_shifts
-  resources :restaurants
-  resources :products
-  resources :categories
   devise_for :admins
   devise_for :users
 
   get 'home/index'
   root 'home#index'
+
+  resources :order_products
+  resources :orders
+  resources :work_shifts
+  resources :restaurants
+  resources :products
+  resources :categories do
+    member do
+      get :activate
+      get :deactivate
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

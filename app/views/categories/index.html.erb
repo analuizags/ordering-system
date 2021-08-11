@@ -20,7 +20,17 @@
         <td><%= category.see_in_kitchen %></td>
         <td><%= link_to 'Show', category %></td>
         <td><%= link_to 'Edit', edit_category_path(category) %></td>
-        <td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if category.active? %>
+            <td>
+              <%= link_to 'Disable', deactivate_category_path(category), "original-title": "Desativar",
+              data: { confirm: 'Disabling the category will cause your products to be disabled as well. Are you sure?' } %>
+            </td>
+          <% else %>
+            <td> 
+              <%= link_to 'Activate', activate_category_path(category), "original-title": "Ativar",
+              data: { confirm: 'Reactivating the category will cause your products to be reactivated as well. Are you sure?' } %>
+            </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
