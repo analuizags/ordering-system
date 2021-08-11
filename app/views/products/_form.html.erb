@@ -20,12 +20,8 @@
     <%= f.text_field :price %>
   </div>
   <div class="field">
-    <%= f.label :active %><br>
-    <%= f.check_box :active %>
-  </div>
-  <div class="field">
     <%= f.label :category_id %><br>
-    <%= f.text_field :category_id %>
+    <%= f.collection_select(:category_id, @categories, :id, :name) %>
   </div>
   <div class="actions">
     <%= f.submit %>
