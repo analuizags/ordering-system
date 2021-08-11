@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   before_action :set_products, only: [:new, :edit, :update, :create]
   before_action :set_tables, only: [:new, :edit, :update, :create]
+  before_action :set_categories, only: [:new, :edit, :update, :create]
 
   # GET /orders
   # GET /orders.json
@@ -17,6 +18,14 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = Order.new
+
+    set_products.each do |product|
+      order_product = OrderProduct.new
+      order_product.product = product
+      @order.order_products << order_product
+    end
+
+    @order
   end
 
   # GET /orders/1/edit
@@ -65,7 +74,11 @@ class OrdersController < ApplicationController
 
   private
     def set_products
-      @products = Product.all
+      @products = Product.joins(:category).where(categories: {active: true}).order("categories.name")
+    end
+
+    def set_categories
+      @categories = Product.joins(:category).select("categories.id, categories.name").where(categories: {active: true}).uniq.order("categories.name")
     end
 
     def set_tables
@@ -82,6 +95,6 @@ class OrdersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       params.require(:order).permit(:table, :status, :work_shift_id,
-        order_product_attributes: [:quantity, :note])
+        order_products_attributes: [:id, :quantity, :note, :product_id])
     end
 end

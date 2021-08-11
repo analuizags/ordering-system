@@ -25,31 +25,34 @@
   </div><br>
 
   <div class="field">
-    <%= f.label :products %><br><br>
+    <%= f.label :order_products %><br><br>
+    <% @categories.each do |category| %>
+      <table border="1">
+        <thead>
+          <tr>
+            <th colspan="4"><%= category.name %></th>
+          </tr>
+          <tr>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Note</th>
+          </tr>
+        </thead>
 
-    <table border=1>
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Unit Price</th>
-          <th>Quantity</th>
-          <th>Note</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @products.each do |product| %>
-          <%= f.fields_for :order_products do |order_product| %>
+        <tbody>
+          <%= f.fields_for :order_products, @order.order_products.select {|order_product| order_product.product.category_id == category.id} do |order_product| %>
             <tr>
-              <td><%= product.name %></td>
-              <td><%= product.price %></td>
-              <td><%= order_product.number_field :quantity %></td>
+              <%= order_product.hidden_field :product_id %>
+              <td><%= order_product.object.product.name %></td>
+              <td><%= order_product.object.product.price %></td>
+              <td><%= order_product.number_field :quantity, min: 0, size: 10 %></td>
               <td><%= order_product.text_area :note %></td>
             </tr>
           <% end %>
-        <% end %>
-      </tbody>
-    </table>
+        </tbody>
+      </table><br>
+    <% end %>
   </div>
 
   <div class="actions">
