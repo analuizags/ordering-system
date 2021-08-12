@@ -5,6 +5,8 @@ class Product < ActiveRecord::Base
 
   monetize :price_cents
 
+  validates :name, :category, presence: true
+
   def activate!
     update_attributes({ active: true })
   end
