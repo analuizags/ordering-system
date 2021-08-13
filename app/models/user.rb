@@ -5,4 +5,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable
 
   has_one :restaurant
+
+  accepts_nested_attributes_for :restaurant
 end
