@@ -9,7 +9,13 @@ Rails.application.routes.draw do
 
   resources :order_products
   resources :orders
-  resources :work_shifts
+
+  resources :work_shifts do
+    member do
+      get :close
+      get :reopen
+    end
+  end
 
   resources :restaurants do
     member do

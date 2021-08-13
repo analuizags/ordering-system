@@ -17,15 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :start_at %><br>
-    <%= f.date_select :start_at %>
-  </div>
-  <div class="field">
-    <%= f.label :end_at %><br>
-    <%= f.date_select :end_at %>
-  </div>
-  <div class="field">
-    <%= f.label :restaurant_id %><br>
-    <%= f.text_field :restaurant_id %>
+    <%= text_field_tag :start_at, Time.current.strftime(I18n.t('time.formats.short')), disabled: 'disabled' %>
   </div>
   <div class="actions">
     <%= f.submit %>

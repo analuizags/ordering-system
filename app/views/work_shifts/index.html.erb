@@ -17,12 +17,22 @@
     <% @work_shifts.each do |work_shift| %>
       <tr>
         <td><%= work_shift.name %></td>
-        <td><%= work_shift.start_at %></td>
-        <td><%= work_shift.end_at %></td>
-        <td><%= work_shift.restaurant %></td>
+        <td><%= I18n.l(work_shift.start_at, format: I18n.t('time.formats.long'))  %></td>
+        <td><%= I18n.l(work_shift.end_at, format: I18n.t('time.formats.long')) unless work_shift.end_at.blank? %></td>
+        <td><%= work_shift.restaurant.name %></td>
         <td><%= link_to 'Show', work_shift %></td>
         <td><%= link_to 'Edit', edit_work_shift_path(work_shift) %></td>
-        <td><%= link_to 'Destroy', work_shift, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if work_shift.end_at.blank? %>
+            <td>
+              <%= link_to 'Close', close_work_shift_path(work_shift), 'original-title': 'Close',
+              data: { confirm: 'Closing the work shift will prevent you from placing new orders until another shift is opened. Are you sure?' } %>
+            </td>
+          <% else %>
+            <td> 
+              <%= link_to 'Reopen', reopen_work_shift_path(work_shift), 'original-title': 'Reopen',
+              data: { confirm: 'This will allow you to enter new orders for that work shift. Are you sure?' } %>
+            </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
