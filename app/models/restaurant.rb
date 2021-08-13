@@ -2,7 +2,7 @@ class Restaurant < ActiveRecord::Base
   belongs_to :user
   has_many :work_shifts
 
-  validates :name, :user, presence: true
+  validates :name, presence: true
 
   def activate!
     update_attributes({ active: true })
