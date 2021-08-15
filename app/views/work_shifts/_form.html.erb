@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.select :name, @names, prompt: true %>
   </div>
   <div class="field">
     <%= f.label :start_at %><br>
