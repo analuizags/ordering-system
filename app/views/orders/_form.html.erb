@@ -13,16 +13,8 @@
 
   <div class="field">
     <%= f.label :table %><br>
-    <%= f.select :table, @tables %>
+    <%= f.select :table, @tables, prompt: true %>
   </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.text_field :status %>
-  </div>
-  <div class="field">
-    <%= f.label :work_shift_id %><br>
-    <%= f.text_field :work_shift_id %>
-  </div><br>
 
   <div class="field">
     <%= f.label :order_products %><br><br>

@@ -1,21 +1,16 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: [:show, :edit, :update, :cancel, :to_do, :done, :close]
   before_action :set_products, only: [:new, :edit, :update, :create]
   before_action :set_tables, only: [:new, :edit, :update, :create]
   before_action :set_categories, only: [:new, :edit, :update, :create]
 
-  # GET /orders
-  # GET /orders.json
   def index
-    @orders = Order.all
+    @orders = Order.order(:created_at)
   end
 
-  # GET /orders/1
-  # GET /orders/1.json
   def show
   end
 
-  # GET /orders/new
   def new
     @order = Order.new
 
@@ -28,14 +23,23 @@ class OrdersController < ApplicationController
     @order
   end
 
-  # GET /orders/1/edit
   def edit
+    # out_order_products = set_products.select {|product| !@order.products.include?(product)}
+
+    # out_order_products.each do |product|
+    #   order_product = OrderProduct.new
+    #   order_product.product = product
+    #   @order.order_products << order_product
+    # end
+
+    # @order
   end
 
-  # POST /orders
-  # POST /orders.json
   def create
     @order = Order.new(order_params)
+
+    @order.status = "registrado"
+    @order.work_shift_id = current_work_shift.id
 
     respond_to do |format|
       if @order.save
@@ -48,9 +52,10 @@ class OrdersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /orders/1
-  # PATCH/PUT /orders/1.json
   def update
+    params[:order].delete(:status)
+    params[:order].delete(:work_shift_id)
+
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to @order, notice: 'Order was successfully updated.' }
@@ -62,13 +67,43 @@ class OrdersController < ApplicationController
     end
   end
 
-  # DELETE /orders/1
-  # DELETE /orders/1.json
   def destroy
-    @order.destroy
+    # @order.destroy
     respond_to do |format|
       format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def to_do
+    @order.to_do!
+    respond_to do |format|
+      format.html { redirect_to orders_path, notice: 'Order was successfully updated status.' }
+      format.json { render :show, status: :ok, location: @order }
+    end
+  end
+
+  def done
+    @order.done!
+    respond_to do |format|
+      format.html { redirect_to orders_path, notice: 'Order was successfully updated status.' }
+      format.json { render :show, status: :ok, location: @order }
+    end
+  end
+
+  def close
+    @order.close!
+    respond_to do |format|
+      format.html { redirect_to orders_path, notice: 'Order was successfully closed.' }
+      format.json { render :show, status: :ok, location: @order }
+    end
+  end
+
+  def cancel
+    @order.cancel!
+    respond_to do |format|
+      format.html { redirect_to orders_path, notice: 'Order was successfully canceled.' }
+      format.json { render :show, status: :ok, location: @order }
     end
   end
 
@@ -87,14 +122,20 @@ class OrdersController < ApplicationController
       @tables
     end
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       params.require(:order).permit(:table, :status, :work_shift_id,
         order_products_attributes: [:id, :quantity, :note, :product_id])
+    end
+
+    def has_open_work_shift?
+      current_work_shift
+    end
+
+    def current_work_shift
+      WorkShift.joins(:restaurant).where(restaurants: {user_id: current_user.id}).where(end_at: nil)[0]
     end
 end

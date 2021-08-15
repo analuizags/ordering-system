@@ -8,7 +8,15 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :order_products
-  resources :orders
+
+  resources :orders do
+  member do
+    get :cancel
+    get :to_do
+    get :done
+    get :close
+  end
+end
 
   resources :work_shifts do
     member do
