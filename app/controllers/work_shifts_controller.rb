@@ -2,6 +2,8 @@ class WorkShiftsController < ApplicationController
   before_action :set_work_shift, only: [:show, :edit, :update, :close, :reopen]
   before_action :set_work_shift_names, only: [:new, :edit, :update, :create]
 
+  before_action :authenticate_user!
+
   def index
     @work_shifts = WorkShift.order(:start_at)
   end

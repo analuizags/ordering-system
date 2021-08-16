@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Restaurants</h1>
+<h3>Hello <%= current_admin.email %></h3>
 
 <table>
   <thead>
@@ -41,4 +42,5 @@
 
 <br>
 
-<%= link_to 'New Restaurant', new_restaurant_path %>
+<%= link_to 'New Restaurant', new_user_registration_path %><br>
+<%= link_to 'Log out', destroy_admin_session_path, method: :delete %>

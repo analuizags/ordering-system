@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :admins
+  devise_for :admins, skip: [:registrations]
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
@@ -10,13 +10,13 @@ Rails.application.routes.draw do
   resources :order_products
 
   resources :orders do
-  member do
-    get :cancel
-    get :to_do
-    get :done
-    get :close
+    member do
+      get :cancel
+      get :to_do
+      get :done
+      get :close
+    end
   end
-end
 
   resources :work_shifts do
     member do

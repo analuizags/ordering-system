@@ -2,6 +2,8 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :activate, :deactivate]
   before_action :load_categories, only: [:new, :edit, :update, :create]
 
+  before_action :authenticate_user!
+
   def index
     @products = Product.order(:name)
   end

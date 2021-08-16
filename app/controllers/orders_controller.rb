@@ -4,6 +4,8 @@ class OrdersController < ApplicationController
   before_action :set_tables, only: [:new, :edit, :update, :create]
   before_action :set_categories, only: [:new, :edit, :update, :create]
 
+  before_action :authenticate_user!
+
   def index
     @orders = Order.order(:created_at)
   end

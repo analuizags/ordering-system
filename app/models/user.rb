@@ -6,5 +6,5 @@ class User < ActiveRecord::Base
 
   has_one :restaurant
 
-  accepts_nested_attributes_for :restaurant
+  accepts_nested_attributes_for :restaurant, allow_destroy: true
 end
