@@ -71,7 +71,10 @@ class ProductsController < ApplicationController
   private
 
     def load_categories
-      @categories = Category.where(active: true).order(:name)
+      @categories = Category.order(:name)
+      @categories.each do |category| 
+        category.name = "#{category.name} - deactivate" if category.active == false
+      end
     end
 
     def set_product

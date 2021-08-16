@@ -13,7 +13,7 @@
   </thead>
 
   <tbody>
-    <% @categories.each do |category| %>
+    <% @categories.active.each do |category| %>
       <tr>
         <td><%= category.name %></td>
         <td><%= category.active %></td>
@@ -22,12 +22,48 @@
         <td><%= link_to 'Edit', edit_category_path(category) %></td>
         <% if category.active? %>
             <td>
-              <%= link_to 'Disable', deactivate_category_path(category), "original-title": "Desativar",
+              <%= link_to 'Deactivate', deactivate_category_path(category), "original-title": "Deactivate",
               data: { confirm: 'Disabling the category will cause your products to be disabled as well. Are you sure?' } %>
             </td>
           <% else %>
             <td> 
-              <%= link_to 'Activate', activate_category_path(category), "original-title": "Ativar",
+              <%= link_to 'Activate', activate_category_path(category), "original-title": "Activate",
+              data: { confirm: 'Reactivating the category will cause your products to be reactivated as well. Are you sure?' } %>
+            </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Active</th>
+      <th>See in kitchen</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @categories.deactivate.each do |category| %>
+      <tr>
+        <td><%= category.name %></td>
+        <td><%= category.active %></td>
+        <td><%= category.see_in_kitchen %></td>
+        <td><%= link_to 'Show', category %></td>
+        <td><%= link_to 'Edit', edit_category_path(category) %></td>
+        <% if category.active? %>
+            <td>
+              <%= link_to 'Deactivate', deactivate_category_path(category), "original-title": "Deactivate",
+              data: { confirm: 'Disabling the category will cause your products to be disabled as well. Are you sure?' } %>
+            </td>
+          <% else %>
+            <td> 
+              <%= link_to 'Activate', activate_category_path(category), "original-title": "Activate",
               data: { confirm: 'Reactivating the category will cause your products to be reactivated as well. Are you sure?' } %>
             </td>
         <% end %>

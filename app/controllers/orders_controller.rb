@@ -111,7 +111,7 @@ class OrdersController < ApplicationController
 
   private
     def set_products
-      @products = Product.joins(:category).where(categories: {active: true}).order("categories.name")
+      @products = Product.active.order("categories.name")
     end
 
     def set_categories

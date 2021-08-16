@@ -3,6 +3,9 @@ class Category < ActiveRecord::Base
 
   validates :name, presence: true
 
+  scope :active, -> { where(active: true) }
+  scope :deactivate, -> { where(active: false) }
+
   def activate!
     update_attributes({ active: true })
   end
