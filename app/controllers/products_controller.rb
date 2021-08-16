@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @products = Product.order(:name)
+    @products = Product.order(:name).page(params[:page]).per(20)
   end
 
   def show
