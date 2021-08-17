@@ -10,30 +10,57 @@
       <th>Owner</th>
       <th>Active</th>
       <th>User</th>
-      <th colspan="4"></th>
+      <th colspan="5"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @restaurants.each do |restaurant| %>
+    <% @restaurants.where(active: true).each do |restaurant| %>
       <tr>
         <td><%= restaurant.name %></td>
         <td><%= restaurant.owner %></td>
         <td><%= restaurant.active %></td>
         <td><%= restaurant.user.email %></td>
         <td><%= link_to 'Show', restaurant %></td>
-        <td><%= link_to 'Edit', edit_restaurant_path(restaurant) %></td>
-        <% if restaurant.active? %>
-            <td>
-              <%= link_to 'Disable', deactivate_restaurant_path(restaurant), "original-title": "Desativar",
-                  data: { confirm: 'Disabling this restaurant results in loss of user access. Are you sure?' } %>
-            </td>
-          <% else %>
-            <td> 
-              <%= link_to 'Activate', activate_restaurant_path(restaurant), "original-title": "Ativar",
-                  data: { confirm: "Reactivating this restaurant results in your user's access permission. Are you sure?" } %>
-            </td>
-        <% end %>
+        <td><%= link_to 'Edit Restaurant', edit_restaurant_path(restaurant) %></td>
+        <td><%= link_to 'Edit User', edit_user_registration_path(restaurant.user) %></td>
+        <td>
+          <%= link_to 'Disable', deactivate_restaurant_path(restaurant), 'original-title': 'Desativar',
+              data: { confirm: 'Disabling this restaurant results in loss of user access. Are you sure?' } %>
+        </td>
+        <td><%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Owner</th>
+      <th>Active</th>
+      <th>User</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @restaurants.where(active: false).each do |restaurant| %>
+      <tr>
+        <td><%= restaurant.name %></td>
+        <td><%= restaurant.owner %></td>
+        <td><%= restaurant.active %></td>
+        <td><%= restaurant.user.email %></td>
+        <td><%= link_to 'Show', restaurant %></td>
+        <td><%= link_to 'Edit Restaurant', edit_restaurant_path(restaurant) %></td>
+        <td><%= link_to 'Edit User', edit_user_registration_path(restaurant.user) %></td>
+        <td> 
+          <%= link_to 'Activate', activate_restaurant_path(restaurant), 'original-title': 'Activate',
+              data: { confirm: "Reactivating this restaurant results in your user's access permission. Are you sure?" } %>
+        </td>
         <td><%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

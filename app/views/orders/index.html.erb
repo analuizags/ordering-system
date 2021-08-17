@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Orders</h1>
+<h3>Hello <%= current_user.restaurant.name if user_signed_in? %></h3>
 
 <table>
   <thead>
@@ -37,4 +38,5 @@
 
 <br>
 
-<%= link_to 'New Order', new_order_path %>
+<%= link_to 'New Order', new_order_path %><br>
+<%= link_to 'Log out', destroy_user_session_path, method: :delete if user_signed_in? %>

@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :admins, skip: [:registrations]
+  devise_for :admins, skip: [:registrations], controllers: {
+    sessions: 'admins/sessions'
+  }
+
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
 
   get 'home/index'
-  root 'home#index'
+  root 'orders#index'
 
   resources :order_products
 

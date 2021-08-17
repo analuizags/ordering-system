@@ -7,4 +7,8 @@ class User < ActiveRecord::Base
   has_one :restaurant
 
   accepts_nested_attributes_for :restaurant, allow_destroy: true
+
+  def active_for_authentication?
+    super && self.restaurant.active?
+  end
 end

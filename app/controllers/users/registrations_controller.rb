@@ -1,6 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters
   before_action :check_permission, only: [:new, :create, :edit, :update]
+  after_action :not_sign_in_after_create
 
   def new
     build_resource({})
@@ -24,28 +25,28 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  # GET /resource/cancel
-  # Forces the session data which is usually expired after sign
-  # in to be expired now. This is useful if the user wants to
-  # cancel oauth signing in/up in the middle of the process,
-  # removing all OAuth session data.
-  # def cancel
-  #   super
-  # end
-
-  def check_permission
-    admin_signed_in? || redirect_to(new_admin_session_path)
-  end
-
   protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(
-        :sign_up,
-        keys:[
-          :email, :password, :password_confirmation,
-          restaurant_attributes: [:name, :owner]
-        ]
-    )
-  end
+    def check_permission
+      admin_signed_in? || redirect_to(new_admin_session_path)
+    end
+  
+    def not_sign_in_after_create
+      sign_out(:user)
+    end
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(
+          :sign_up,
+          keys:[
+            :email, :password, :password_confirmation,
+            restaurant_attributes: [:name, :owner]
+          ]
+      )
+    end
+
+    # The path used after sign up.
+    def after_sign_up_path_for(resource)
+      restaurants_path
+    end
 end
