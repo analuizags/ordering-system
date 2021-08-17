@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @orders = Order.order(:created_at)
+    @orders = Order.where(work_shift_id: current_work_shift.id).order(:created_at)
   end
 
   def show
@@ -138,6 +138,6 @@ class OrdersController < ApplicationController
     end
 
     def current_work_shift
-      WorkShift.joins(:restaurant).where(restaurants: {user_id: current_user.id}).where(end_at: nil)[0]
+      WorkShift.current_work_shift(current_user.id)
     end
 end
