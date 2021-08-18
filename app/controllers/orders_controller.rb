@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @orders = Order.where(work_shift_id: current_work_shift.id).order(:created_at)
+    @orders = Order.to_the(current_work_shift.try(:id)).order(:created_at)
   end
 
   def show
@@ -131,13 +131,5 @@ class OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:table, :status, :work_shift_id,
         order_products_attributes: [:id, :quantity, :note, :product_id])
-    end
-
-    def has_open_work_shift?
-      current_work_shift
-    end
-
-    def current_work_shift
-      WorkShift.current_work_shift(current_user.id)
     end
 end

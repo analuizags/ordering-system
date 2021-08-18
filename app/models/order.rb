@@ -8,6 +8,8 @@ class Order < ActiveRecord::Base
   validates :table, :status, :work_shift, presence: true
   validates :order_products, length: { minimum: 1, too_short: "mínimo %{count} item" }
 
+  scope :to_the, ->(work_shift_id) { where(work_shift_id: work_shift_id) }
+
   def to_do!
     update_attributes({ status: 'making'})
   end
