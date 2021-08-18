@@ -4,7 +4,7 @@ class WorkShift < ActiveRecord::Base
 
   validates :name, :restaurant, presence: true
 
-  scope :current_work_shift, ->(current_user_id) { joins(:restaurant).where(restaurants: {user_id: current_user_id}).where(end_at: nil)[0] }
+  scope :to_the, ->(restaurant_id) { where(restaurant_id: restaurant_id) }
 
   def close!
     update_attributes({ end_at: Time.current })
@@ -12,5 +12,9 @@ class WorkShift < ActiveRecord::Base
 
   def reopen!
     update_attributes({ end_at: nil })
+  end
+
+  def self.current_work_shift(restaurant_id)
+    to_the(restaurant_id).where(end_at: nil).first
   end
 end

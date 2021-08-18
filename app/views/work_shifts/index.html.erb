@@ -40,4 +40,8 @@
 
 <br>
 
-<%= link_to 'New Work shift', new_work_shift_path %>
+<% if has_open_work_shift? %>
+  <%= link_to 'New Work shift', new_work_shift_path %>
+<% else %>
+  <%= link_to 'New Work shift', work_shifts_path, data: ( @work_shifts.current_work_shift(current_user.id).nil? ? nil : { confirm: 'There is an open work shift, you need to close it first.' } ) %>
+<% end %>

@@ -5,7 +5,7 @@ class WorkShiftsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @work_shifts = WorkShift.order(:start_at)
+    @work_shifts = WorkShift.to_the(current_restaurant.id).order(:start_at)
   end
 
   def show
@@ -26,10 +26,16 @@ class WorkShiftsController < ApplicationController
     @work_shift.restaurant_id = current_user.restaurant.id
 
     respond_to do |format|
-      if @work_shift.save
-        format.html { redirect_to work_shifts_path, notice: 'Work shift was successfully created.' }
-        format.json { render :show, status: :created, location: @work_shift }
+      if has_open_work_shift?
+        if @work_shift.save
+          format.html { redirect_to work_shifts_path, notice: 'Work shift was successfully created.' }
+          format.json { render :show, status: :created, location: @work_shift }
+        else
+          format.html { render :new }
+          format.json { render json: @work_shift.errors, status: :unprocessable_entity }
+        end
       else
+        @work_shift.errors.add(:work_shift, 'There is an open work shift, you need to close it first.')
         format.html { render :new }
         format.json { render json: @work_shift.errors, status: :unprocessable_entity }
       end
