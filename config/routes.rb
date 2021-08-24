@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     member do
       get :activate
       get :deactivate
+      get :seeing_in_kitchen
     end
   end
 

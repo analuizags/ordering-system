@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show, :edit, :update, :activate, :deactivate]
+  before_action :set_category, only: [:show, :edit, :update, :activate, :deactivate, :seeing_in_kitchen]
 
   before_action :authenticate_user!
 
@@ -55,6 +55,14 @@ class CategoriesController < ApplicationController
     @category.deactivate!
     respond_to do |format|
       format.html { redirect_to categories_path, notice: 'Category was successfully disabled.' }
+      format.json { render :show, status: :ok, location: @category }
+    end
+  end
+
+  def seeing_in_kitchen
+    @category.seeing_in_kitchen!(!@category.see_in_kitchen)
+    respond_to do |format|
+      format.html { redirect_to categories_path, notice: 'Category was successfully updated.' }
       format.json { render :show, status: :ok, location: @category }
     end
   end

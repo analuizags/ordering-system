@@ -8,7 +8,7 @@
       <th>Name</th>
       <th>Active</th>
       <th>See in kitchen</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -31,6 +31,17 @@
               data: { confirm: 'Reactivating the category will cause your products to be reactivated as well. Are you sure?' } %>
             </td>
         <% end %>
+        <% if category.see_in_kitchen %>
+            <td>
+              <%= link_to 'Don\'t See in kitchen', seeing_in_kitchen_category_path(category), 'original-title': 'Don\'t See in kitchen',
+              data: { confirm: 'Are you sure?' } %>
+            </td>
+          <% else %>
+            <td> 
+              <%= link_to 'See in kitchen', seeing_in_kitchen_category_path(category), 'original-title': 'See in kitchen',
+              data: { confirm: 'Are you sure?' } %>
+            </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -44,7 +55,7 @@
       <th>Name</th>
       <th>Active</th>
       <th>See in kitchen</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -58,13 +69,24 @@
         <td><%= link_to 'Edit', edit_category_path(category) %></td>
         <% if category.active? %>
             <td>
-              <%= link_to 'Deactivate', deactivate_category_path(category), "original-title": "Deactivate",
+              <%= link_to 'Deactivate', deactivate_category_path(category), 'original-title': 'Deactivate',
               data: { confirm: 'Disabling the category will cause your products to be disabled as well. Are you sure?' } %>
             </td>
           <% else %>
             <td> 
-              <%= link_to 'Activate', activate_category_path(category), "original-title": "Activate",
+              <%= link_to 'Activate', activate_category_path(category), 'original-title': 'Activate',
               data: { confirm: 'Reactivating the category will cause your products to be reactivated as well. Are you sure?' } %>
+            </td>
+        <% end %>
+        <% if category.see_in_kitchen %>
+            <td>
+              <%= link_to 'Don\'t See in kitchen', seeing_in_kitchen_category_path(category), 'original-title': 'Don\'t See in kitchen',
+              data: { confirm: 'Are you sure?' } %>
+            </td>
+          <% else %>
+            <td> 
+              <%= link_to 'See in kitchen', seeing_in_kitchen_category_path(category), 'original-title': 'See in kitchen',
+              data: { confirm: 'Are you sure?' } %>
             </td>
         <% end %>
       </tr>

@@ -5,6 +5,7 @@ class Category < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
   scope :deactivate, -> { where(active: false) }
+  scope :see_in_kitchen, -> { where(see_in_kitchen: true) }
 
   def activate!
     update_attributes({ active: true })
@@ -12,5 +13,9 @@ class Category < ActiveRecord::Base
 
   def deactivate!
     update_attributes({ active: false })
+  end
+
+  def seeing_in_kitchen!(value)
+    update_attributes({ see_in_kitchen: value })
   end
 end
