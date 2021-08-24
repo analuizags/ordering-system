@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th>Start at</th>
       <th>End at</th>
@@ -16,6 +17,7 @@
   <tbody>
     <% @work_shifts.each do |work_shift| %>
       <tr>
+        <td><%= work_shift.id %></td>
         <td><%= work_shift.name %></td>
         <td><%= I18n.l(work_shift.start_at, format: I18n.t('time.formats.long'))  %></td>
         <td><%= I18n.l(work_shift.end_at, format: I18n.t('time.formats.long')) unless work_shift.end_at.blank? %></td>
@@ -41,7 +43,7 @@
 <br>
 
 <% if has_open_work_shift? %>
-  <%= link_to 'New Work shift', new_work_shift_path %>
-<% else %>
   <%= link_to 'New Work shift', work_shifts_path, data: ( @work_shifts.current_work_shift(current_user.id).nil? ? nil : { confirm: 'There is an open work shift, you need to close it first.' } ) %>
+<% else %>
+  <%= link_to 'New Work shift', new_work_shift_path %>
 <% end %>

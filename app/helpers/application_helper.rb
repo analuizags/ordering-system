@@ -4,6 +4,10 @@ module ApplicationHelper
   end
 
   def has_open_work_shift?
-    WorkShift.current_work_shift(current_restaurant.id).blank?
+    !current_work_shift.blank?
+  end
+
+  def current_work_shift
+    WorkShift.current_work_shift(current_restaurant.id)
   end
 end

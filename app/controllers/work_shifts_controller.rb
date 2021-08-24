@@ -27,6 +27,10 @@ class WorkShiftsController < ApplicationController
 
     respond_to do |format|
       if has_open_work_shift?
+        @work_shift.errors.add(:work_shift, 'There is an open work shift, you need to close it first.')
+        format.html { render :new }
+        format.json { render json: @work_shift.errors, status: :unprocessable_entity }
+      else
         if @work_shift.save
           format.html { redirect_to work_shifts_path, notice: 'Work shift was successfully created.' }
           format.json { render :show, status: :created, location: @work_shift }
@@ -34,10 +38,6 @@ class WorkShiftsController < ApplicationController
           format.html { render :new }
           format.json { render json: @work_shift.errors, status: :unprocessable_entity }
         end
-      else
-        @work_shift.errors.add(:work_shift, 'There is an open work shift, you need to close it first.')
-        format.html { render :new }
-        format.json { render json: @work_shift.errors, status: :unprocessable_entity }
       end
     end
   end
