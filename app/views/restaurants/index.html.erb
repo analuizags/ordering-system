@@ -6,6 +6,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th>Owner</th>
       <th>Active</th>
@@ -17,6 +18,7 @@
   <tbody>
     <% @restaurants.where(active: true).each do |restaurant| %>
       <tr>
+        <td><%= restaurant.id %></td>
         <td><%= restaurant.name %></td>
         <td><%= restaurant.owner %></td>
         <td><%= restaurant.active %></td>

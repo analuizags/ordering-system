@@ -1,11 +1,20 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Orders</h1>
-<h3>Hello <%= current_user.restaurant.name if user_signed_in? %></h3>
+<h3>
+  Hello <%= current_user.restaurant.name if user_signed_in? %> <br>
+  Turno aberto: 
+  <% if has_open_work_shift? %>
+    <%= current_work_shift.name %>
+  <% else %>
+    <%= 'none' %>
+  <% end %>
+</h3>
 
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Table</th>
       <th>Status</th>
       <th>Work Shift</th>
@@ -16,6 +25,7 @@
   <tbody>
     <% @orders.each do |order| %>
       <tr>
+        <td><%= order.id %></td>
         <td><%= order.table %></td>
         <td><%= order.status %></td>
         <td><%= order.work_shift.name %></td>
@@ -39,4 +49,5 @@
 <br>
 
 <%= link_to 'New Order', new_order_path %><br>
-<%= link_to 'Log out', destroy_user_session_path, method: :delete if user_signed_in? %>
+<%= link_to 'Edit User', edit_user_registration_path %><br>
+<%= link_to 'Log out', destroy_user_session_path, method: :delete if user_signed_in? %><br>

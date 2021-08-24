@@ -17,30 +17,22 @@ class OrdersController < ApplicationController
     @order = Order.new
 
     set_products.each do |product|
-      order_product = OrderProduct.new
-      order_product.product = product
-      @order.order_products << order_product
+      @order.order_products.build(product_id: product.id)
     end
-
-    @order
   end
 
   def edit
-    # out_order_products = set_products.select {|product| !@order.products.include?(product)}
+    out_order_products = set_products.select { |product| !@order.products.include?(product) }
 
-    # out_order_products.each do |product|
-    #   order_product = OrderProduct.new
-    #   order_product.product = product
-    #   @order.order_products << order_product
-    # end
-
-    # @order
+    out_order_products.each do |product|
+      @order.order_products.build(product_id: product.id)
+    end
   end
 
   def create
     @order = Order.new(order_params)
 
-    @order.status = "registrado"
+    @order.status = "registered"
     @order.work_shift_id = current_work_shift.id
 
     respond_to do |format|

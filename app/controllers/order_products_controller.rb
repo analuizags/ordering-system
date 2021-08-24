@@ -4,7 +4,7 @@ class OrderProductsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @order_products = OrderProduct.all
+    @order_products = OrderProduct.order(:order_id)
   end
 
   def show

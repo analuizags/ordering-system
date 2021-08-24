@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th>Price</th>
       <th>Active</th>
@@ -16,6 +17,7 @@
   <tbody>
     <% @products.active.each do |product| %>
       <tr>
+        <td><%= product.id %></td>
         <td><%= product.name %></td>
         <td><%= humanized_money_with_symbol product.price %></td>
         <td><%= product.active %></td>
@@ -41,6 +43,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th>Price</th>
       <th>Active</th>
@@ -52,6 +55,7 @@
   <tbody>
     <% @products.deactivate.each do |product| %>
       <tr>
+        <td><%= product.id %></td>
         <td><%= product.name %></td>
         <td><%= humanized_money_with_symbol product.price %></td>
         <td><%= product.active %></td>

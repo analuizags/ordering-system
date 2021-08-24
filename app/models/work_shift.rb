@@ -7,6 +7,7 @@ class WorkShift < ActiveRecord::Base
   scope :to_the, ->(restaurant_id) { where(restaurant_id: restaurant_id) }
 
   def close!
+    OrderProduct.where(quantity: 0).destroy_all
     update_attributes({ end_at: Time.current })
   end
 

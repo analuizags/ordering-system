@@ -3,7 +3,7 @@ class Order < ActiveRecord::Base
   has_many :order_products
   has_many :products, through: :order_products
 
-  accepts_nested_attributes_for :order_products, allow_destroy: true, reject_if: proc { |obj| obj[:quantity].to_i < 1 }
+  accepts_nested_attributes_for :order_products, allow_destroy: true, reject_if: proc { |obj| OrderProduct.find_by_id(obj[:id].to_i).nil? && obj[:quantity].to_i == 0 }
 
   validates :table, :status, :work_shift, presence: true
   validates :order_products, length: { minimum: 1, too_short: "mínimo %{count} item" }
