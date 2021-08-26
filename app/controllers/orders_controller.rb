@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :cancel, :to_do, :done, :close]
+  before_action :set_order, only: [:show, :edit, :update, :cancel, :make, :done, :close]
   before_action :set_products, only: [:new, :edit, :update, :create]
   before_action :set_tables, only: [:new, :edit, :update, :create]
   before_action :set_categories, only: [:new, :edit, :update, :create]
@@ -37,7 +37,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+        format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -52,7 +52,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+        format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }
@@ -69,18 +69,28 @@ class OrdersController < ApplicationController
     end
   end
 
-  def to_do
-    @order.to_do!
+  def make
+    @order.order_products.each { |order_product| order_product.make! }
+
     respond_to do |format|
-      format.html { redirect_to orders_path, notice: 'Order was successfully updated status.' }
+      format.html { redirect_to orders_path, notice: 'Order was successfully making.' }
       format.json { render :show, status: :ok, location: @order }
     end
   end
 
   def done
-    @order.done!
+    @order.order_products.each { |order_product| order_product.done! }
+
     respond_to do |format|
-      format.html { redirect_to orders_path, notice: 'Order was successfully updated status.' }
+      format.html { redirect_to orders_path, notice: 'Order was successfully done.' }
+      format.json { render :show, status: :ok, location: @order }
+    end
+  end
+
+  def reopen
+    @order.reopen!
+    respond_to do |format|
+      format.html { redirect_to orders_path, notice: 'Order was successfully reopened.' }
       format.json { render :show, status: :ok, location: @order }
     end
   end

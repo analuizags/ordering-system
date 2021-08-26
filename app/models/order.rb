@@ -10,17 +10,16 @@ class Order < ActiveRecord::Base
   validates :order_products, length: { minimum: 1, too_short: "mínimo %{count} item" }
 
   scope :to_the, ->(work_shift_id) { where(work_shift_id: work_shift_id) }
+  scope :registered, -> { where(status: 'registered') }
+  scope :closed, -> { where(status: 'closed') }
+  scope :canceled, -> { where(status: 'canceled') }
 
-  def to_do!
-    update_attributes({ status: 'making'})
-  end
-
-  def done!
-    update_attributes({ status: 'done'})
+  def reopen!
+    update_attributes({ status: 'registered' })
   end
 
   def close!
-    update_attributes({ status: 'closed'})
+    update_attributes({ status: 'closed' })
   end
 
   def cancel!

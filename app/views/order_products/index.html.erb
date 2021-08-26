@@ -7,6 +7,8 @@
     <tr>
       <th>ID</th>
       <th>Quantity</th>
+      <th>Making</th>
+      <th>Done</th>
       <th>Note</th>
       <th>Work Shift</th>
       <th>Order</th>
@@ -18,12 +20,14 @@
   <tbody>
     <% @order_products.each do |order_product| %>
       <tr>
-        <td><%= order_product.id %></td>
+        <td style="color:red"><%= order_product.id %></td>
         <td><%= order_product.quantity %></td>
+        <td><%= order_product.making %></td>
+        <td><%= order_product.done %></td>
         <td><%= order_product.note %></td>
         <td><%= order_product.order.work_shift.name %></td>
         <td><%= order_product.order.id %></td>
-        <td><%= order_product.product.id %>-<%= order_product.product.name %></td>
+        <td><%= order_product.product.name %>.id=<%= order_product.product.id %></td>
         <td><%= link_to 'Show', order_product %></td>
         <td><%= link_to 'Edit', edit_order_product_path(order_product) %></td>
         <td><%= link_to 'Destroy', order_product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
