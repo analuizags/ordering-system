@@ -11,6 +11,36 @@
   <% end %>
 </h3>
 
+<%= form_tag orders_path, method: :get do %>
+  <table>
+    <thead>
+      <tr style="text-align:left">
+        <th>Work Shift:</th>
+        <th>Table:</th>
+        <th>Product:</th>
+        <th>Status:</th>
+        <th colspan="2">Period:</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td><%= select_tag(:work_shift, options_for_select(@domains[:work_shifts], params[:work_shift]), { prompt: 'Select an option' } ) %></td>
+        <td><%= select_tag(:table, options_for_select(@domains[:tables], params[:table]), { prompt: 'Select an option' } ) %></td>
+        <td><%= select_tag(:product_id, options_for_select(@domains[:products], params[:product_id]), { prompt: 'Select an option' }) %></td>
+        <td><%= select_tag(:status, options_for_select(@domains[:statuses]), { prompt: 'Select an option' }) %></td>
+        <td>
+          <%= date_field_tag(:after, params[:after] ? params[:after] : Date.today-30.days, { class:"mask-date" }) %>
+          &nbsp;-&nbsp;
+          <%= date_field_tag(:before, params[:before] ? params[:before] : Date.today, { class:"mask-date" }) %>
+        </td>
+        <td><%= submit_tag("Pesquisar", class:"actions") %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %> <br>
+
 <table>
   <thead>
     <tr>

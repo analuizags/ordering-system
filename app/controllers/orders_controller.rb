@@ -1,13 +1,19 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :cancel, :make, :done, :close]
-  before_action :set_products, only: [:new, :edit, :update, :create]
-  before_action :set_tables, only: [:new, :edit, :update, :create]
-  before_action :set_categories, only: [:new, :edit, :update, :create]
-
+  before_action :set_order, only: [:show, :edit, :update, :cancel, :make, :done, :close, :reopen]
+  before_action :load_products, only: [:new, :edit, :update, :create]
+  before_action :load_tables, only: [:new, :edit, :update, :create]
+  before_action :load_categories, only: [:new, :edit, :update, :create]
   before_action :authenticate_user!
 
   def index
-    @orders = Order.to_the(current_work_shift.try(:id)).order(:created_at)
+    # @orders = filter_orders.includes([:work_shift, :products])
+    @orders = filter_orders
+
+    @domains = {}
+    @domains[:tables] = load_tables.map { |table| [table, table] }
+    @domains[:products] = load_products.map { |product| [product.name, product.id] }
+    @domains[:work_shifts] = load_work_shift_names.map { |work_shift| [work_shift, work_shift] }
+    @domains[:statuses] = [['Registered', 'Registered'], ['Closed','Closed'], ['Canceled', 'Canceled']]
   end
 
   def show
@@ -16,13 +22,13 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
 
-    set_products.each do |product|
+    @products.each do |product|
       @order.order_products.build(product_id: product.id)
     end
   end
 
   def edit
-    out_order_products = set_products.select { |product| !@order.products.include?(product) }
+    out_order_products = @products.select { |product| !@order.products.include?(product) }
 
     out_order_products.each do |product|
       @order.order_products.build(product_id: product.id)
@@ -112,18 +118,44 @@ class OrdersController < ApplicationController
   end
 
   private
-    def set_products
+
+    def load_products
       @products = Product.active.order("categories.name")
     end
 
-    def set_categories
+    def load_categories
       @categories = Product.joins(:category).select("categories.id, categories.name").where(categories: {active: true}).uniq.order("categories.name")
     end
 
-    def set_tables
+    def load_tables
       @tables = []
-      (1..40).each {|n| @tables << "Mesa #{sprintf('%02d', n)}"}
+      (1..40).each {|n| @tables << "Table #{sprintf('%02d', n)}"}
       @tables
+    end
+
+    def load_work_shift_names
+      names = []
+      (1..4).each {|t| names << "Work Shift #{sprintf('%02d', t)}"}
+      names
+    end
+
+    def current_orders
+      Order.to_the(current_work_shift.try(:id)).order(:table, :created_at)
+    end
+
+    def filter_orders
+      finder = OrdersFinder.new(
+        params: order_find_params,
+        init_collection: current_orders
+      )
+
+      finder.execute
+    end
+
+    def order_find_params
+      filters = params.to_hash
+      filters = filters.except('access_token', 'action', 'controller')
+      filters
     end
 
     def set_order
