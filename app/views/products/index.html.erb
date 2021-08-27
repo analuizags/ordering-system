@@ -2,6 +2,26 @@
 
 <h1>Listing Products</h1>
 
+<%= form_tag products_path, method: :get do %>
+  <table>
+    <thead>
+      <tr style="text-align:left">
+        <th>Name:</th>
+        <th>Category:</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td><%= text_field_tag(:name, params[:name]) %></td>
+        <td><%= select_tag(:category_id, options_for_select(@domains[:categories], params[:category_id]), { prompt: 'Select an option' }) %></td>
+        <td><%= submit_tag("Pesquisar", class:"actions") %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %> <br>
+
 <table>
   <thead>
     <tr>

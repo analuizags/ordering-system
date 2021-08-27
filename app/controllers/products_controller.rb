@@ -1,11 +1,13 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :activate, :deactivate]
   before_action :load_categories, only: [:new, :edit, :update, :create]
-
   before_action :authenticate_user!
 
   def index
-    @products = Product.order(:name).page(params[:page]).per(20)
+    @products = filter_products.page(params[:page]).per(20)
+
+    @domains = {}
+    @domains[:categories] = load_categories.map { |categry| [categry.name, categry.id] }
   end
 
   def show
@@ -75,6 +77,25 @@ class ProductsController < ApplicationController
       @categories.each do |category| 
         category.name = "#{category.name} - deactivate" if category.active == false
       end
+    end
+
+    def current_products
+      Product.order(:name)
+    end
+
+    def filter_products
+      finder = ProductsFinder.new(
+        params: product_find_params,
+        init_collection: current_products
+      )
+
+      finder.execute
+    end
+
+    def product_find_params
+      filters = params.to_hash
+      filters = filters.except('access_token', 'action', 'controller')
+      filters
     end
 
     def set_product
