@@ -1,6 +1,6 @@
 class WorkShiftsController < ApplicationController
   before_action :set_work_shift, only: [:show, :edit, :update, :close, :reopen]
-  before_action :set_work_shift_names, only: [:new, :edit, :update, :create]
+  before_action :load_work_shift_names, only: [:new, :edit, :update, :create]
 
   before_action :authenticate_user!
 
@@ -83,9 +83,9 @@ class WorkShiftsController < ApplicationController
 
   private
 
-    def set_work_shift_names
+    def load_work_shift_names
       @names = []
-      (1..4).each {|t| @names << "Turno #{sprintf('%02d', t)}"}
+      (1..4).each {|t| @names << "Work Shift #{sprintf('%02d', t)}"}
       @names
     end
 

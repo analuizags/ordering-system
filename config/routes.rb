@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   }
 
   devise_for :users, controllers: {
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
   }
 
   get 'home/index'
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
       get :make
       get :done
       get :close
+      get :reopen
     end
   end
 

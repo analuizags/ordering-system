@@ -38,7 +38,7 @@
               <%= order_product.hidden_field :product_id %>
               <td><%= order_product.object.product.name %></td>
               <td><%= order_product.object.product.price %></td>
-              <td><%= order_product.number_field :quantity, min: 0, size: 10 %></td>
+              <td><%= order_product.number_field :quantity, min: (order_product.object.making + order_product.object.done), size: 10 %></td>
               <td><%= order_product.text_area :note %></td>
             </tr>
           <% end %>
