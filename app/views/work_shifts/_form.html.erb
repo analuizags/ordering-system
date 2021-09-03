@@ -17,7 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :start_at %><br>
-    <%= text_field_tag :start_at, Time.current.strftime(I18n.t('time.formats.short')), disabled: 'disabled' %>
+    <%= text_field_tag :start_at, @work_shift.start_at.strftime(I18n.t('time.formats.short')), disabled: 'disabled' %>
   </div>
   <div class="actions">
     <%= f.submit %>

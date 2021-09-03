@@ -28,9 +28,7 @@ class OrdersController < ApplicationController
   end
 
   def edit
-    out_order_products = @products.select { |product| !@order.products.include?(product) }
-
-    out_order_products.each do |product|
+    @products.select { |product| !@order.products.include?(product) }.each do |product|
       @order.order_products.build(product_id: product.id)
     end
   end
