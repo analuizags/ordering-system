@@ -1,26 +1,32 @@
-<h2>Log in User</h2>
+<main class="form-signin text-center">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <img class="mb-4" src="<%= asset_path('restaurant-logo.png') %>" alt="restaurant-logo" width="72" height="72">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="form-floating">
+      <%= f.email_field :email, { class: "form-control", autocomplete: "email", placeholder: "name@example.com" } %>
+      <%= f.label :email, { for: "user_email" } %>
     </div>
+    <div class="form-floating">
+      <%= f.password_field :password, { class: "form-control", autocomplete: "current-password", placeholder: "Password" } %>
+      <%= f.label :password, { for: "user_password" } %>
+    </div>
+
+    <div class="checkbox mb-3">
+      <% if devise_mapping.rememberable? %>
+        <div>
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me %>
+        </div>
+      <% end %>
+      <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+        <div>
+          <%= link_to "Forgot your password?", new_password_path(resource_name), { class:"link-secondary" } %><br />
+        </div>
+      <% end %>
+    </div>
+
+    <%= f.submit "Sign in", { class:"w-100 btn btn-lg btn-primary" } %>
+    <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
   <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+</main>
