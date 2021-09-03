@@ -12,3 +12,11 @@
  *
  *= require_self
  */
+
+a.header-link {
+  text-decoration: none !important;
+}
+
+a.header-link:hover {
+  color: rgb(136, 136, 136) !important;
+}

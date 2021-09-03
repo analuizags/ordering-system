@@ -7,13 +7,70 @@
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+  <!-- Bootstrap CSS v5.1.0-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+  <!-- Bootstrap Icons 1.4.0-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <header>
+    <div class="collapse bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">Hello</h4>
+            <p class="text-muted">
+              <% if admin_signed_in?%>
+                <%= current_admin.email %><br>
+              <% elsif user_signed_in?%>
+                <%= current_user.restaurant.name %><br>
+                <% if has_open_work_shift? %>
+                  Open work shift: <%= current_work_shift.name %><br>
+                <% else %>
+                  No work shifts currently open<br>
+                <% end %>
+              <% end %>
+            </p>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <ul class="list-unstyled">
+              <% if admin_signed_in?%>
+                <%= link_to 'New Restaurant', new_user_registration_path, { class: "text-white header-link" } %><br>
+                <%= link_to 'Edit Account', edit_admin_password_path, { class: "text-white header-link" } %><br>
+                <%= link_to 'Log out', destroy_admin_session_path, { method: :delete, class: "text-white header-link" } %>
+              <% elsif user_signed_in?%>
+                <%= current_user.restaurant.name %><br>
+                <% if has_open_work_shift? %>
+                  Open work shift: <%= current_work_shift.name %><br>
+                <% else %>
+                  No work shifts currently open<br>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <div class="navbar-brand d-flex align-items-center">
+          <i class="bi bi-geo me-2" ></i>
+          <strong><%= params[:controller] %></strong>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+    </div>
+  </header>
 
-<%= yield %>
+  <div class="container py-5">
+    <%= yield %>
+  </div>
 
 </body>
 </html>
