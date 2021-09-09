@@ -11,15 +11,19 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :see_in_kitchen %><br>
-    <%= f.check_box :see_in_kitchen %>
+  <div class="row">
+    <div class="col-md-8 mb-3">
+      <%= f.label :name, { class: 'form-label' } %>
+      <%= f.text_field :name, { class: 'form-control' } %>
+    </div>
+    <div class="col-md-4 align-self-end mb-3 pb-1">
+      <div class="form-check form-switch">
+        <%= f.label :see_in_kitchen, { class: 'form-check-label' } %>
+        <%= f.check_box :see_in_kitchen, { class: 'form-check-input' } %>
+      </div>
+    </div>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "#{params[:action].humanize} #{@category.class.to_s.humanize}", { class: 'btn btn-primary mb-3' } %>
   </div>
 <% end %>
