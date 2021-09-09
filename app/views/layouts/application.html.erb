@@ -16,39 +16,47 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body class='bg-light>'>
   <header>
     <div class="collapse bg-dark" id="navbarHeader">
       <div class="container">
         <div class="row">
           <div class="col-sm-8 col-md-7 py-4">
-            <h4 class="text-white">Hello</h4>
-            <p class="text-muted">
-              <% if admin_signed_in?%>
-                <%= current_admin.email %><br>
-              <% elsif user_signed_in?%>
+            <% if admin_signed_in? %>
+              <h4 class="text-white"><%= link_to 'Hello', restaurants_path, { class: 'text-white header-link' } %></h4>
+              <p class="text-muted"><%= current_admin.email %></p>
+            <% elsif user_signed_in? %>
+              <h4 class="text-white"><%= link_to 'Hello', orders_path, { class: 'text-white header-link' } %></h4>
+              <p class="text-muted">
                 <%= current_user.restaurant.name %><br>
                 <% if has_open_work_shift? %>
-                  Open work shift: <%= current_work_shift.name %><br>
+                  <%= current_work_shift.name %> it's open<br>
                 <% else %>
                   No work shifts currently open<br>
                 <% end %>
-              <% end %>
-            </p>
+              </p>
+            <% end %>
           </div>
           <div class="col-sm-4 offset-md-1 py-4">
             <ul class="list-unstyled">
-              <% if admin_signed_in?%>
+              <% if admin_signed_in? %>
                 <%= link_to 'New Restaurant', new_user_registration_path, { class: "text-white header-link" } %><br>
                 <%= link_to 'Edit Account', edit_admin_password_path, { class: "text-white header-link" } %><br>
                 <%= link_to 'Log out', destroy_admin_session_path, { method: :delete, class: "text-white header-link" } %>
-              <% elsif user_signed_in?%>
-                <%= current_user.restaurant.name %><br>
-                <% if has_open_work_shift? %>
-                  Open work shift: <%= current_work_shift.name %><br>
-                <% else %>
-                  No work shifts currently open<br>
-                <% end %>
+              <% elsif user_signed_in? %>
+                <div class="row">
+                  <div class="col">
+                    <%= link_to 'Kitchen', '#', { class: "text-white header-link" } %><br>
+                    <%= link_to 'Products', products_path, { class: "text-white header-link" } %><br>
+                    <%= link_to 'Categories', categories_path, { class: "text-white header-link" } %>
+                  </div>
+                  <div class="col">
+                    <%= link_to 'New Order', new_order_path, { class: "text-white header-link" } %><br>
+                    <%= link_to 'Edit Account', edit_user_registration_path, { class: "text-white header-link" } %><br>
+                    <%= link_to 'Log out', destroy_user_session_path, { class: "text-white header-link", method: :delete } %><br>
+                  </div>
+                </div>
+
               <% end %>
             </ul>
           </div>

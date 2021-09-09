@@ -11,19 +11,26 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="mb-3">
+    <%= f.label :name, { class: 'form-label' } %>
+    <%= f.text_field :name, { class: 'form-control' } %>
   </div>
-  <div class="field">
-    <%= f.label :price %><br>
-    <%= f.text_field :price %>
+  <div class="row mb-3">
+    <div class="col-md-5">
+      <%= f.label :price, { class: 'form-label' } %>
+      <div class="input-group">
+        <span class="input-group-text"><%= currency_symbol %></span>
+        <%= f.text_field :price, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <%= f.label :category_id, { class: 'form-label' } %>
+      <%= f.collection_select :category_id, @categories, :id, :name, { prompt: true }, { class: 'form-select' } %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :category_id %><br>
-    <%= f.collection_select(:category_id, @categories, :id, :name, prompt: true) %>
-  </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "#{params[:action].humanize} #{@product.class.to_s.humanize}",
+        { class: 'btn btn-primary mb-3' } %>
   </div>
 <% end %>
