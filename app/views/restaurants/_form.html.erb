@@ -12,15 +12,16 @@
   <% end %>
   <%= f.hidden_field :user_id %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="mb-3">
+    <%= f.label :name, { class: 'form-label' } %>
+    <%= f.text_field :name, { class: 'form-control' } %>
   </div>
-  <div class="field">
-    <%= f.label :owner %><br>
-    <%= f.text_field :owner %>
+  <div class="mb-3">
+    <%= f.label :owner, { class: 'form-label' } %>
+    <%= f.text_field :owner, { class: 'form-control' } %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "#{params[:action].humanize} #{@restaurant.class.to_s.humanize}",
+        { class: 'btn btn-primary mb-3' } %>
   </div>
 <% end %>
