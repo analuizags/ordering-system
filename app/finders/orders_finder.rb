@@ -39,7 +39,7 @@ class OrdersFinder < BaseFinder
   end
 
   def by_status(orders)
-    return orders if params[:status_id].nil?
+    return orders if params[:status].nil?
 
     orders.where(status: params[:status])
   end

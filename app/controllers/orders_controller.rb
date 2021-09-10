@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
     @domains[:tables] = load_tables.map { |table| [table, table] }
     @domains[:products] = load_products.map { |product| [product.name, product.id] }
     @domains[:work_shifts] = load_work_shift_names.map { |work_shift| [work_shift, work_shift] }
-    @domains[:statuses] = [['Registered', 'Registered'], ['Closed','Closed'], ['Canceled', 'Canceled']]
+    @domains[:statuses] = [['Registered', 'registered'], ['Closed','rlosed'], ['Canceled', 'canceled']]
   end
 
   def show
