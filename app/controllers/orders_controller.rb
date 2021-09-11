@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
     @domains[:tables] = load_tables.map { |table| [table, table] }
     @domains[:products] = load_products.map { |product| [product.name, product.id] }
     @domains[:work_shifts] = load_work_shift_names.map { |work_shift| [work_shift, work_shift] }
-    @domains[:statuses] = [['Registered', 'registered'], ['Closed','rlosed'], ['Canceled', 'canceled']]
+    @domains[:statuses] = [['Registered', 'registered'], ['Closed','closed'], ['Canceled', 'canceled']]
   end
 
   def show
@@ -127,6 +127,12 @@ class OrdersController < ApplicationController
 
     def load_tables
       @tables = []
+      # (1..40).each do |n|
+      #   @tables << {
+      #     id: n,
+      #     name: "Table #{sprintf('%02d', n)}"
+      #   }
+      # end
       (1..40).each {|n| @tables << "Table #{sprintf('%02d', n)}"}
       @tables
     end
