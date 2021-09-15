@@ -4,6 +4,7 @@ class WorkShift < ActiveRecord::Base
 
   validates :name, :restaurant, presence: true
 
+  default_scope { order(end_at: :desc, start_at: :desc) }
   scope :to_the, ->(restaurant_id) { where(restaurant_id: restaurant_id) }
 
   def close!

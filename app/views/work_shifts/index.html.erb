@@ -1,49 +1,52 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Work Shifts</h1>
+<div class='row justify-content-center'>
+  <div class='col-md-9 col-lg-10'>
+    <div class='table-responsive'>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Start at</th>
+            <th>End at</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Start at</th>
-      <th>End at</th>
-      <th>Restaurant</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+        <tbody>
+          <% @work_shifts.each do |work_shift| %>
+            <tr>
+              <td>#<%= work_shift.id %></td>
+              <td><%= work_shift.name %></td>
+              <td><%= I18n.l(work_shift.start_at, format: I18n.t('time.formats.separate_bar'))  %></td>
+              <td><%= I18n.l(work_shift.end_at, format: I18n.t('time.formats.separate_bar')) unless work_shift.end_at.blank? %></td>
+              <% if work_shift.end_at.blank? %>
+                  <td>
+                    <%= link_to 'Close', close_work_shift_path(work_shift), { class: 'btn btn-primary btn-sm', data: { 
+                        confirm: 'Closing the work shift will prevent you from placing new orders until another 
+                                  shift is opened. Are you sure?' } } %>
+                  </td>
+                <% else %>
+                  <td> 
+                    <%= link_to 'Reopen', reopen_work_shift_path(work_shift), { class: 'btn btn-primary btn-sm', data: { 
+                        confirm: 'This will allow you to enter new orders for that work shift. Are you sure?' } } %>
+                  </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
-  <tbody>
-    <% @work_shifts.each do |work_shift| %>
-      <tr>
-        <td><%= work_shift.id %></td>
-        <td><%= work_shift.name %></td>
-        <td><%= I18n.l(work_shift.start_at, format: I18n.t('time.formats.long'))  %></td>
-        <td><%= I18n.l(work_shift.end_at, format: I18n.t('time.formats.long')) unless work_shift.end_at.blank? %></td>
-        <td><%= work_shift.restaurant.name %></td>
-        <td><%= link_to 'Show', work_shift %></td>
-        <td><%= link_to 'Edit', edit_work_shift_path(work_shift) %></td>
-        <% if work_shift.end_at.blank? %>
-            <td>
-              <%= link_to 'Close', close_work_shift_path(work_shift), 'original-title': 'Close',
-              data: { confirm: 'Closing the work shift will prevent you from placing new orders until another shift is opened. Are you sure?' } %>
-            </td>
-          <% else %>
-            <td> 
-              <%= link_to 'Reopen', reopen_work_shift_path(work_shift), 'original-title': 'Reopen',
-              data: { confirm: 'This will allow you to enter new orders for that work shift. Are you sure?' } %>
-            </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <br>
 
-<br>
-
-<% if has_open_work_shift? %>
-  <%= link_to 'New Work shift', work_shifts_path, data: ( @work_shifts.current_work_shift(current_user.id).nil? ? nil : { confirm: 'There is an open work shift, you need to close it first.' } ) %>
-<% else %>
-  <%= link_to 'New Work shift', new_work_shift_path %>
-<% end %>
+      <% if has_open_work_shift? %>
+        <%= link_to 'Open Work shift', work_shifts_path, { method: :post, data:
+            ( @work_shifts.current_work_shift(current_user.id).nil? ? nil :
+            { confirm: 'There is an open work shift, you need to close it first.' } ) } %>
+      <% else %>
+        <%= link_to 'Open Work shift', work_shifts_path, { method: :post } %>
+      <% end %>
+      </div>
+  </div>
+</div>

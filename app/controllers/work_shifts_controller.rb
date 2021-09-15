@@ -1,6 +1,5 @@
 class WorkShiftsController < ApplicationController
   before_action :set_work_shift, only: [:show, :edit, :update, :close, :reopen]
-  before_action :load_work_shift_names, only: [:new, :edit, :update, :create]
 
   before_action :authenticate_user!
 
@@ -13,29 +12,31 @@ class WorkShiftsController < ApplicationController
 
   def new
     @work_shift = WorkShift.new
-    @work_shift.start_at = Time.current.strftime("%d %b - %Hh%M")
   end
 
   def edit
   end
 
   def create
-    @work_shift = WorkShift.new(work_shift_params)
+    start_at = Time.current
 
-    @work_shift.start_at = Time.current
-    @work_shift.restaurant_id = current_user.restaurant.id
+    @work_shift = WorkShift.new(
+      name: set_work_shift_name(start_at),
+      start_at: start_at,
+      restaurant_id: current_user.restaurant.id
+    )
 
     respond_to do |format|
       if has_open_work_shift?
         @work_shift.errors.add(:work_shift, 'There is an open work shift, you need to close it first.')
-        format.html { render :new }
+        format.html { redirect_to work_shifts_path }
         format.json { render json: @work_shift.errors, status: :unprocessable_entity }
       else
         if @work_shift.save
           format.html { redirect_to work_shifts_path, notice: 'Work shift was successfully created.' }
           format.json { render :show, status: :created, location: @work_shift }
         else
-          format.html { render :new }
+          format.html { redirect_to work_shifts_path }
           format.json { render json: @work_shift.errors, status: :unprocessable_entity }
         end
       end
@@ -83,10 +84,14 @@ class WorkShiftsController < ApplicationController
 
   private
 
-    def load_work_shift_names
-      @names = []
-      (1..4).each {|t| @names << "Work Shift #{sprintf('%02d', t)}"}
-      @names
+    def set_work_shift_name(time)
+      if time.to_time >= "17:00:00".to_time || time.to_time < "04:00:00".to_time
+        "Work Shift 03"
+      elsif time >= "12:00:00".to_time
+        "Work Shift 02"
+      elsif time >= "04:00:00".to_time
+        "Work Shift 01"
+      end
     end
 
     def set_work_shift
