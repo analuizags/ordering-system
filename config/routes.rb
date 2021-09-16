@@ -23,6 +23,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'kitchen', to: 'orders#kitchen'
+
   resources :work_shifts do
     member do
       get :close

@@ -3,17 +3,12 @@ class OrdersController < ApplicationController
   before_action :load_products, only: [:new, :edit, :update, :create]
   before_action :load_tables, only: [:new, :edit, :update, :create]
   before_action :load_categories, only: [:new, :edit, :update, :create]
+  before_action :load_domains, only: [:index, :kitchen]
   before_action :authenticate_user!
 
   def index
     # @orders = filter_orders.includes([:work_shift, :products])
     @orders = filter_orders
-
-    @domains = {}
-    @domains[:tables] = load_tables.map { |table| [table, table] }
-    @domains[:products] = load_products.map { |product| [product.name, product.id] }
-    @domains[:work_shifts] = load_work_shift_names.map { |work_shift| [work_shift, work_shift] }
-    @domains[:statuses] = [['Registered', 'registered'], ['Closed','closed'], ['Canceled', 'canceled']]
   end
 
   def show
@@ -77,7 +72,7 @@ class OrdersController < ApplicationController
     @order.order_products.each { |order_product| order_product.make! }
 
     respond_to do |format|
-      format.html { redirect_to orders_path, notice: 'Order was successfully making.' }
+      format.html { redirect_to kitchen_path, notice: 'Order was successfully making.' }
       format.json { render :show, status: :ok, location: @order }
     end
   end
@@ -86,7 +81,7 @@ class OrdersController < ApplicationController
     @order.order_products.each { |order_product| order_product.done! }
 
     respond_to do |format|
-      format.html { redirect_to orders_path, notice: 'Order was successfully done.' }
+      format.html { redirect_to kitchen_path, notice: 'Order was successfully done.' }
       format.json { render :show, status: :ok, location: @order }
     end
   end
@@ -115,7 +110,20 @@ class OrdersController < ApplicationController
     end
   end
 
+  def kitchen
+    # @orders = filter_orders.includes([:work_shift, :products])
+    @orders = filter_orders.registered.kitchen
+  end
+
   private
+
+    def load_domains
+      @domains = {}
+      @domains[:tables] = load_tables.map { |table| [table, table] }
+      @domains[:products] = load_products.map { |product| [product.name, product.id] }
+      @domains[:work_shifts] = load_work_shift_names.map { |work_shift| [work_shift, work_shift] }
+      @domains[:statuses] = [['Registered', 'registered'], ['Closed','closed'], ['Canceled', 'canceled']]
+    end
 
     def load_products
       @products = Product.active.order("categories.name")
@@ -125,6 +133,7 @@ class OrdersController < ApplicationController
       @categories = Product.joins(:category).select("categories.id, categories.name").where(categories: {active: true}).uniq.order("categories.name")
     end
 
+    # TODO: retornar um hash com ID e name
     def load_tables
       @tables = []
       # (1..40).each do |n|

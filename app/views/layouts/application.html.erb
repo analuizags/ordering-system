@@ -46,12 +46,16 @@
               <% elsif user_signed_in? %>
                 <div class="row">
                   <div class="col">
-                    <%= link_to 'Kitchen', '#', { class: "text-white header-link" } %><br>
+                    <%= link_to 'New Order', new_order_path, { class: "text-white header-link" } %><br>
+                    <%= link_to 'Kitchen', kitchen_path, { class: "text-white header-link" } %><br>
+                  </div>
+                  <div class="col">
+                    <%= link_to 'Work Shifts', work_shifts_path, { class: "text-white header-link" } %><br>
                     <%= link_to 'Products', products_path, { class: "text-white header-link" } %><br>
                     <%= link_to 'Categories', categories_path, { class: "text-white header-link" } %>
                   </div>
                   <div class="col">
-                    <%= link_to 'New Order', new_order_path, { class: "text-white header-link" } %><br>
+                    <%= link_to 'Report', '#', { class: "text-white header-link" } %><br>
                     <%= link_to 'Edit Account', edit_user_registration_path, { class: "text-white header-link" } %><br>
                     <%= link_to 'Log out', destroy_user_session_path, { class: "text-white header-link", method: :delete } %><br>
                   </div>
@@ -69,7 +73,13 @@
           <i class="bi bi-geo me-2" ></i>
           <strong><%= params[:controller] %></strong>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="navbar-text d-flex align-items-center">
+          <%# link_to 'New Order', new_order_path, { class: "text-white header-link" } %><br>
+          <%= "new_#{params[:controller][0..-2]}_path" if params[:controller] != 'work_shifts'%>
+          <%= "#{params[:controller][0..-2]}_path" if params[:controller] == 'work_shifts' %>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+                aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
           <i class="bi bi-list"></i>
         </button>
       </div>
