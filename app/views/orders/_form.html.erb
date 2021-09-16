@@ -29,12 +29,16 @@
     <%# f.collection_select :table, @tables, :id, :name, { prompt: true }, { class: 'form-select' } %>
   </div>
 
-  <div>Category <div class="dropdown-divider w-50 m-1"></div></div>
-  <ul class="list-group list-group-flush mb-3">
+  <% cont = 0 %>
 
-    <% cont = 0 %>
+  <% @categories.each do |category| %>
 
-    <% @categories.each do |category| %>
+    <div class="mt-4">
+      <b><%= category.name.humanize %></b>
+      <div class="dropdown-divider w-50 mb-1 ms-0 me-1 mt-1"></div>
+    </div>
+
+    <ul class="list-group list-group-flush mb-3">
       <%= f.fields_for :order_products, @order.order_products.select { 
           |order_product| order_product.product.category_id == category.id } do |order_product| %>
 
@@ -92,39 +96,8 @@
           </div>
         </li>
       <% end %>
-    <% end %>
-  </ul>
-
-  <!--
-  <div class="field">
-    <% @categories.each do |category| %>
-      <table>
-        <thead>
-          <tr>
-            <th colspan="4"><%= category.name %></th>
-          </tr>
-          <tr>
-            <th>Product</th>
-            <th>Unit Price</th>
-            <th>Quantity</th>
-            <th>Note</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <%= f.fields_for :order_products, @order.order_products.select {|order_product| order_product.product.category_id == category.id} do |order_product| %>
-            <tr>
-              <%= order_product.hidden_field :product_id %>
-              <td><%= order_product.object.product.name %></td>
-              <td><%= order_product.object.product.price %></td>
-              <td><%= order_product.number_field :quantity, min: (order_product.object.making + order_product.object.done), size: 10 %></td>
-              <td><%= order_product.text_area :note %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table><br>
-    <% end %>
-  </div> -->
+    </ul>
+  <% end %>
 
   <div class="actions">
     <%= f.submit "#{params[:action].humanize} #{@order.class.to_s.humanize}",
