@@ -8,8 +8,10 @@ class Product < ActiveRecord::Base
   validates :name, :category, presence: true
   validates :price_cents, numericality: { greater_than: 0 }
 
+  scope :to_the, ->(restaurant_id) { where(restaurant_id: restaurant_id) }
   scope :active, -> { joins(:category).where(active: true).where(categories: { active: true }) }
   scope :deactivate, -> { joins(:category).where("products.active IS FALSE OR categories.active IS FALSE" ) }
+  scope :default_order, -> { joins(:category).order("categories.name, products.name") }
 
   def activate!
     update_attributes({ active: true })

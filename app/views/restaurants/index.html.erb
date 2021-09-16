@@ -15,58 +15,66 @@
         </thead>
 
         <tbody>
-          <% @restaurants.where(active: true).each do |restaurant| %>
-            <tr>
-              <td>#<%= restaurant.id %></td>
-              <td><%= restaurant.name %></td>
-              <td><%= restaurant.owner %></td>
-              <td><%= restaurant.user.email %></td>
-              <td>
-                <%= link_to edit_restaurant_path(restaurant), { class: 'btn btn-sm btn-secondary',
-                                                                title: 'Edit Restaurant' } do %>
-                  <i class='bi bi-pencil'></i>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to edit_user_registration_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
-                                                                            title: 'Edit User'} do %>
-                  <i class='bi bi-person'></i>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to deactivate_restaurant_path(restaurant), { class: 'btn btn-sm btn-danger', title: 'Disable',
-                  data: { confirm: 'Disabling this restaurant results in loss of user access. Are you sure?' } } do %>
-                  <i class='bi bi-trash'></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
+          <% if @restaurants.where(active: true).count > 0 %>
 
-          <% @restaurants.where(active: false).each do |restaurant| %>
-            <tr class='text-muted'>
-              <td>#<%= restaurant.id %></td>
-              <td><%= restaurant.name %></td>
-              <td><%= restaurant.owner %></td>
-              <td><%= restaurant.user.email %></td>
-              <td>
-                <%= link_to edit_restaurant_path(restaurant), { class: 'btn btn-sm btn-secondary',
-                                                                title: 'Edit Restaurant' } do %>
-                  <i class='bi bi-pencil'></i>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to edit_user_registration_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
-                                                                            title: 'Edit User'} do %>
-                  <i class='bi bi-person'></i>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to activate_restaurant_path(restaurant), { class: 'btn btn-sm btn-danger', title: 'Activate',
-                    data: { confirm: "Reactivating this restaurant results in your user's access permission. Are you sure?" } } do %>
-                  <i class='bi bi-recycle'></i>
-                <% end %>
-              </td>
-            </tr>
+            <% @restaurants.where(active: true).each do |restaurant| %>
+              <tr>
+                <td>#<%= restaurant.id %></td>
+                <td><%= restaurant.name %></td>
+                <td><%= restaurant.owner %></td>
+                <td><%= restaurant.user.email %></td>
+                <td>
+                  <%= link_to edit_restaurant_path(restaurant), { class: 'btn btn-sm btn-secondary',
+                                                                  title: 'Edit Restaurant' } do %>
+                    <i class='bi bi-pencil'></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to edit_user_registration_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
+                                                                              title: 'Edit User'} do %>
+                    <i class='bi bi-person'></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to deactivate_restaurant_path(restaurant), { class: 'btn btn-sm btn-danger', title: 'Disable',
+                    data: { confirm: 'Disabling this restaurant results in loss of user access. Are you sure?' } } do %>
+                    <i class='bi bi-trash'></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+
+            <% @restaurants.where(active: false).each do |restaurant| %>
+              <tr class='text-muted'>
+                <td>#<%= restaurant.id %></td>
+                <td><%= restaurant.name %></td>
+                <td><%= restaurant.owner %></td>
+                <td><%= restaurant.user.email %></td>
+                <td>
+                  <%= link_to edit_restaurant_path(restaurant), { class: 'btn btn-sm btn-secondary',
+                                                                  title: 'Edit Restaurant' } do %>
+                    <i class='bi bi-pencil'></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to edit_user_registration_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
+                                                                              title: 'Edit User'} do %>
+                    <i class='bi bi-person'></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to activate_restaurant_path(restaurant), { class: 'btn btn-sm btn-danger', title: 'Activate',
+                      data: { confirm: "Reactivating this restaurant results in your user's access permission. Are you sure?" } } do %>
+                    <i class='bi bi-recycle'></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+
+          <% else %>
+            <tr><td colspan="5" class="text-center text-muted">
+              No records were found. You can register if you want...
+            </td></tr>
           <% end %>
         </tbody>
       </table>

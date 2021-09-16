@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def current_restaurant
-    current_user.restaurant
+    current_user.try(:restaurant)
   end
 
   def has_open_work_shift?

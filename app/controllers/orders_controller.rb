@@ -126,11 +126,13 @@ class OrdersController < ApplicationController
     end
 
     def load_products
-      @products = Product.active.order("categories.name")
+      @products = Product.to_the(current_restaurant.try(:id)).active.default_order
     end
 
     def load_categories
-      @categories = Product.joins(:category).select("categories.id, categories.name").where(categories: {active: true}).uniq.order("categories.name")
+      @categories = Product.to_the(current_restaurant.try(:id))
+                           .joins(:category).select("categories.id, categories.name")
+                           .where(categories: {active: true}).uniq.order("categories.name")
     end
 
     # TODO: retornar um hash com ID e name
@@ -153,7 +155,7 @@ class OrdersController < ApplicationController
     end
 
     def current_orders
-      Order.to_the(current_work_shift.try(:id)).order(:table, :created_at)
+      Order.to_the(current_work_shift.try(:id))
     end
 
     def filter_orders

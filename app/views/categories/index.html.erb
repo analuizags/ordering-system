@@ -12,64 +12,72 @@
         </thead>
 
         <tbody>
-          <% @categories.active.each do |category| %>
-            <tr>
-              <td><%= category.name %></td>
-              <td>
-                <%= link_to edit_category_path(category), { class: 'btn btn-sm btn-secondary', title: 'Edit' } do %>
-                  <i class='bi bi-pencil'></i>
-                <% end %>
-              </td>
-              <td>
-                <% if category.see_in_kitchen %>
-                  <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary',
-                      title: 'Don\'t See in kitchen', data: { confirm: 'Are you sure?' } } do %>
-                      <i class='bi bi-eye-slash'></i>
-                  <% end %>
-                <% else %>
-                  <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary', 
-                      title: 'See in kitchen', data: { confirm: 'Are you sure?' } } do %>
-                      <i class='bi bi-eye'></i>
-                  <% end %>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to deactivate_category_path(category), { class: 'btn btn-sm btn-danger', title: 'Deactivate',
-                    data: { confirm: 'Disabling the category will cause your products to be disabled as well. Are you sure?' } } do %>
-                  <i class='bi bi-trash'></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
+          <% if @categories.active.count > 0 %>
 
-          <% @categories.deactivate.each do |category| %>
-            <tr class='text-muted'>
-              <td><%= category.name %></td>
-              <td>
-                <%= link_to edit_category_path(category), { class: 'btn btn-sm btn-secondary', title: 'Edit' } do %>
-                  <i class='bi bi-pencil'></i>
-                <% end %>
-              </td>
-              <td>
-                <% if category.see_in_kitchen %>
-                  <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary',
-                      title: 'Don\'t See in kitchen', data: { confirm: 'Are you sure?' } } do %>
-                      <i class='bi bi-eye-slash'></i>
+            <% @categories.active.each do |category| %>
+              <tr>
+                <td><%= category.name %></td>
+                <td>
+                  <%= link_to edit_category_path(category), { class: 'btn btn-sm btn-secondary', title: 'Edit' } do %>
+                    <i class='bi bi-pencil'></i>
                   <% end %>
-                <% else %>
-                  <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary', 
-                      title: 'See in kitchen', data: { confirm: 'Are you sure?' } } do %>
-                      <i class='bi bi-eye'></i>
+                </td>
+                <td>
+                  <% if category.see_in_kitchen %>
+                    <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary',
+                        title: 'Don\'t See in kitchen', data: { confirm: 'Are you sure?' } } do %>
+                        <i class='bi bi-eye-slash'></i>
+                    <% end %>
+                  <% else %>
+                    <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary',
+                        title: 'See in kitchen', data: { confirm: 'Are you sure?' } } do %>
+                        <i class='bi bi-eye'></i>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to activate_category_path(category), { class: 'btn btn-sm btn-danger', title: 'Activate',
-                    data: { confirm: "Reactivating the category will cause your products to be reactivated as well. Are you sure?" } } do %>
-                  <i class='bi bi-recycle'></i>
-                <% end %>
-              </td>
-            </tr>
+                </td>
+                <td>
+                  <%= link_to deactivate_category_path(category), { class: 'btn btn-sm btn-danger', title: 'Deactivate',
+                      data: { confirm: 'Disabling the category will cause your products to be disabled as well. Are you sure?' } } do %>
+                    <i class='bi bi-trash'></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+
+            <% @categories.deactivate.each do |category| %>
+              <tr class='text-muted'>
+                <td><%= category.name %></td>
+                <td>
+                  <%= link_to edit_category_path(category), { class: 'btn btn-sm btn-secondary', title: 'Edit' } do %>
+                    <i class='bi bi-pencil'></i>
+                  <% end %>
+                </td>
+                <td>
+                  <% if category.see_in_kitchen %>
+                    <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary',
+                        title: 'Don\'t See in kitchen', data: { confirm: 'Are you sure?' } } do %>
+                        <i class='bi bi-eye-slash'></i>
+                    <% end %>
+                  <% else %>
+                    <%= link_to seeing_in_kitchen_category_path(category), { class: 'btn btn-sm btn-secondary',
+                        title: 'See in kitchen', data: { confirm: 'Are you sure?' } } do %>
+                        <i class='bi bi-eye'></i>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to activate_category_path(category), { class: 'btn btn-sm btn-danger', title: 'Activate',
+                      data: { confirm: "Reactivating the category will cause your products to be reactivated as well. Are you sure?" } } do %>
+                    <i class='bi bi-recycle'></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+
+          <% else %>
+            <tr><td colspan="5" class="text-center text-muted">
+              No records were found. You can register if you want...
+            </td></tr>
           <% end %>
         </tbody>
       </table>

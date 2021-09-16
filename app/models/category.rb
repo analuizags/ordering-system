@@ -3,6 +3,7 @@ class Category < ActiveRecord::Base
 
   validates :name, presence: true
 
+  scope :to_the, ->(restaurant_id) { where(restaurant_id: restaurant_id) }
   scope :active, -> { where(active: true) }
   scope :deactivate, -> { where(active: false) }
   scope :see_in_kitchen, -> { where(see_in_kitchen: true) }

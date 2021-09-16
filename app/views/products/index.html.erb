@@ -36,44 +36,52 @@
         </thead>
 
         <tbody>
-          <% @products.active.each do |product| %>
-            <tr>
-              <td><%= product.name %></td>
-              <td><%= humanized_money_with_symbol product.price %></td>
-              <td><%= product.category.name %></td>
-              <td>
-                <%= link_to edit_product_path(product), { class: 'btn btn-sm btn-secondary',
-                                                                title: 'Edit' } do %>
-                  <i class='bi bi-pencil'></i>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to deactivate_product_path(product), { class: 'btn btn-sm btn-danger', title: 'Deactivate',
-                                                                data: { confirm: 'Are you sure?' } } do %>
-                  <i class='bi bi-trash'></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
+          <% if @products.active.count > 0 %>
 
-          <% @products.deactivate.each do |product| %>
-            <tr class='text-muted'>
-              <td><%= product.name %></td>
-              <td><%= humanized_money_with_symbol product.price %></td>
-              <td><%= product.category.name %></td>
-              <td>
-                <%= link_to edit_product_path(product), { class: 'btn btn-sm btn-secondary',
-                                                                title: 'Edit' } do %>
-                  <i class='bi bi-pencil'></i>
-                <% end %>
-              </td>
-              <td> 
-                <%= link_to activate_product_path(product), { class: 'btn btn-sm btn-danger', title: "Activate",
-                                                              data: { confirm: 'Are you sure?' } } do %>
-                  <i class='bi bi-recycle'></i>
-                <% end %>
-              </td>
-            </tr>
+            <% @products.active.each do |product| %>
+              <tr>
+                <td><%= product.name %></td>
+                <td><%= humanized_money_with_symbol product.price %></td>
+                <td><%= product.category.name %></td>
+                <td>
+                  <%= link_to edit_product_path(product), { class: 'btn btn-sm btn-secondary',
+                                                                  title: 'Edit' } do %>
+                    <i class='bi bi-pencil'></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to deactivate_product_path(product), { class: 'btn btn-sm btn-danger', title: 'Deactivate',
+                                                                  data: { confirm: 'Are you sure?' } } do %>
+                    <i class='bi bi-trash'></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+
+            <% @products.deactivate.each do |product| %>
+              <tr class='text-muted'>
+                <td><%= product.name %></td>
+                <td><%= humanized_money_with_symbol product.price %></td>
+                <td><%= product.category.name %></td>
+                <td>
+                  <%= link_to edit_product_path(product), { class: 'btn btn-sm btn-secondary',
+                                                                  title: 'Edit' } do %>
+                    <i class='bi bi-pencil'></i>
+                  <% end %>
+                </td>
+                <td> 
+                  <%= link_to activate_product_path(product), { class: 'btn btn-sm btn-danger', title: "Activate",
+                                                                data: { confirm: 'Are you sure?' } } do %>
+                    <i class='bi bi-recycle'></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+
+          <% else %>
+            <tr><td colspan="5" class="text-center text-muted">
+              No records were found. You can register if you want...
+            </td></tr>
           <% end %>
         </tbody>
       </table>

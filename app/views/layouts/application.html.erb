@@ -69,7 +69,9 @@
       <div class="container">
         <div class="navbar-brand d-flex align-items-center">
           <i class="bi bi-geo me-2" ></i>
-          <strong><%= params[:controller] %></strong>
+          <!-- <strong><%= params[:controller] %></strong> -->
+          <strong><%= "Restaurant" if user_signed_in? %></strong>
+          <strong><%= "Admin" if admin_signed_in? %></strong>
         </div>
         <div class="navbar-text d-flex ms-auto me-3">
 

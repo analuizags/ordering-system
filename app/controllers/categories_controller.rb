@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @categories = Category.order(:name)
+    @categories = Category.to_the(current_restaurant.try(:id)).order(:name)
   end
 
   def show
@@ -19,6 +19,8 @@ class CategoriesController < ApplicationController
 
   def create
     @category = Category.new(category_params)
+
+    @category.restaurant_id = current_restaurant.try(:id)
 
     respond_to do |format|
       if @category.save

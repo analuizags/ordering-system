@@ -1,13 +1,12 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :activate, :deactivate]
   before_action :load_categories, only: [:new, :edit, :update, :create]
+  before_action :load_domains, only: [:index]
   before_action :authenticate_user!
 
   def index
-    @products = filter_products.page(params[:page]).per(20)
-
-    @domains = {}
-    @domains[:categories] = load_categories.map { |categry| [categry.name, categry.id] }
+    # @products = filter_products.page(params[:page]).per(20)
+    @products = filter_products
   end
 
   def show
@@ -22,6 +21,8 @@ class ProductsController < ApplicationController
 
   def create
     @product = Product.new(product_params)
+
+    @product.restaurant_id = current_restaurant.try(:id)
 
     respond_to do |format|
       if @product.save
@@ -72,15 +73,20 @@ class ProductsController < ApplicationController
 
   private
 
+    def load_domains
+      @domains = {}
+      @domains[:categories] = load_categories.map { |categry| [categry.name, categry.id] }
+    end
+
     def load_categories
-      @categories = Category.order(:name)
+      @categories = Category.to_the(current_restaurant.try(:id)).order(:name)
       @categories.each do |category| 
         category.name = "#{category.name} - deactivate" if category.active == false
       end
     end
 
     def current_products
-      Product.order(:name)
+      Product.to_the(current_restaurant.try(:id)).default_order
     end
 
     def filter_products
