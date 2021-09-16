@@ -40,7 +40,6 @@
           <div class="col-sm-4 offset-md-1 py-4">
             <ul class="list-unstyled">
               <% if admin_signed_in? %>
-                <%= link_to 'New Restaurant', new_user_registration_path, { class: "text-white header-link" } %><br>
                 <%= link_to 'Edit Account', edit_admin_password_path, { class: "text-white header-link" } %><br>
                 <%= link_to 'Log out', destroy_admin_session_path, { method: :delete, class: "text-white header-link" } %>
               <% elsif user_signed_in? %>
@@ -60,7 +59,6 @@
                     <%= link_to 'Log out', destroy_user_session_path, { class: "text-white header-link", method: :delete } %><br>
                   </div>
                 </div>
-
               <% end %>
             </ul>
           </div>
@@ -73,10 +71,24 @@
           <i class="bi bi-geo me-2" ></i>
           <strong><%= params[:controller] %></strong>
         </div>
-        <div class="navbar-text d-flex align-items-center">
-          <%# link_to 'New Order', new_order_path, { class: "text-white header-link" } %><br>
-          <%= "new_#{params[:controller][0..-2]}_path" if params[:controller] != 'work_shifts'%>
-          <%= "#{params[:controller][0..-2]}_path" if params[:controller] == 'work_shifts' %>
+        <div class="navbar-text d-flex ms-auto me-3">
+
+          <% case params[:controller]
+          when 'work_shifts'
+            if has_open_work_shift? %>
+              <%= link_to 'Open Work shift', work_shifts_path, { method: :post, class: "btn btn-outline-secondary btn-sm", data:
+                  ( @work_shifts.current_work_shift(current_user.id).nil? ? nil :
+                  { confirm: 'There is an open work shift, you need to close it first.' } ) } %>
+            <% else %>
+              <%= link_to 'Open Work shift', work_shifts_path, { method: :post, class: "btn btn-outline-secondary btn-sm" } %>
+            <% end %>
+          <% when 'restaurants' %>
+             <%= link_to 'New Restaurant', new_user_registration_path, { class: "btn btn-outline-secondary btn-sm" } %>
+          <% when 'orders', 'products', 'categories'
+            base = "#{params[:controller].singularize}" %>
+            <%= link_to "New #{base}", send("new_#{base}_path"), { class: "btn btn-outline-secondary btn-sm" } %>
+          <% end %>
+
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
                 aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
