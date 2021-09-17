@@ -11,9 +11,9 @@ Rails.application.routes.draw do
   get 'home/index'
   root 'orders#index'
 
-  resources :order_products
+  # resources :order_products
 
-  resources :orders do
+  resources :orders, except: [:show] do
     member do
       get :cancel
       get :make
@@ -25,28 +25,28 @@ Rails.application.routes.draw do
 
   get 'kitchen', to: 'orders#kitchen'
 
-  resources :work_shifts do
+  resources :work_shifts, except: [:show] do
     member do
       get :close
       get :reopen
     end
   end
 
-  resources :restaurants do
+  resources :restaurants, except: [:show] do
     member do
       get :activate
       get :deactivate
     end
   end
 
-  resources :products do
+  resources :products, except: [:show] do
     member do
       get :activate
       get :deactivate
     end
   end
 
-  resources :categories do
+  resources :categories, except: [:show] do
     member do
       get :activate
       get :deactivate

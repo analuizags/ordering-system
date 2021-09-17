@@ -2,7 +2,7 @@
   <div class='col-md-9 col-lg-10'>
     <% if notice %>
       <div class="alert alert-success alert-dismissible fade show p-2" role="alert">
-        <p id="notice" class="m-1"><%= notice %>Login efetuado com sucesso.</p>
+        <p id="notice" class="m-1"><%= notice %></p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="padding: 1rem 1rem !important"></button>
       </div>
     <% end %>
@@ -35,7 +35,7 @@
                   <% end %>
                 </td>
                 <td>
-                  <%= link_to edit_user_registration_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
+                  <%= link_to edit_admins_user_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
                                                                               title: 'Edit User'} do %>
                     <i class='bi bi-person'></i>
                   <% end %>
@@ -62,7 +62,7 @@
                   <% end %>
                 </td>
                 <td>
-                  <%= link_to edit_user_registration_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
+                  <%= link_to edit_admins_user_path(restaurant.user), { class: 'btn btn-sm btn-secondary',
                                                                               title: 'Edit User'} do %>
                     <i class='bi bi-person'></i>
                   <% end %>
