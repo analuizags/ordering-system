@@ -1,7 +1,11 @@
-<p id="notice"><%= notice %></p>
-
 <div class='row justify-content-center'>
   <div class='col-md-9 col-lg-10'>
+    <% if notice %>
+      <div class="alert alert-success alert-dismissible fade show p-2" role="alert">
+        <p id="notice" class="m-1"><%= notice %>Login efetuado com sucesso.</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="padding: 1rem 1rem !important"></button>
+      </div>
+    <% end %>
 
     <!-- <%= form_tag orders_path, method: :get do %>
       <div class="card mb-5 pt-3">
