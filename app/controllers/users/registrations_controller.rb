@@ -1,7 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters
-  before_action :check_permission, only: [:new, :create, :edit, :update]
-  after_action :not_sign_in_after_create
+  before_action :check_permission, only: [:new, :create]
+  after_action :not_sign_in_after_create, only: [:new, :create]
 
   def new
     build_resource({})
