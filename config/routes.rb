@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   # resources :order_products
 
-  resources :orders, except: [:show] do
+  resources :orders, except: [:show, :destroy] do
     member do
       get :cancel
       get :make
@@ -25,28 +25,28 @@ Rails.application.routes.draw do
 
   get 'kitchen', to: 'orders#kitchen'
 
-  resources :work_shifts, except: [:show] do
+  resources :work_shifts, except: [:show, :destroy] do
     member do
       get :close
       get :reopen
     end
   end
 
-  resources :restaurants, except: [:show] do
+  resources :restaurants, except: [:show, :destroy] do
     member do
       get :activate
       get :deactivate
     end
   end
 
-  resources :products, except: [:show] do
+  resources :products, except: [:show, :destroy] do
     member do
       get :activate
       get :deactivate
     end
   end
 
-  resources :categories, except: [:show] do
+  resources :categories, except: [:show, :destroy] do
     member do
       get :activate
       get :deactivate
@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   namespace :admins do
     resources :users, only: [:edit, :update]
+    resources :admins, only: [:edit, :update]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

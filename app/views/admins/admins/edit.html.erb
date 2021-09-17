@@ -1,0 +1,43 @@
+<div class='row justify-content-center'>
+  <div class='col-md-6 col-lg-7'>
+    <h4 class="mb-3">Editing User</h4>
+
+    <% if @admin.errors.any? %>
+      <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+        <ul>
+          <% @admin.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+
+      </div>
+    <% end %>
+
+    <%= form_for([:admins, @admin]) do |f| %>
+      <div class=" mb-3">
+        <%= f.label :email, { class: 'form-label' } %>
+        <%= f.email_field :email, { class: 'form-control', autofocus: true, autocomplete: "email" } %>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <%= f.label :password, { class: 'form-label' } %>
+          <%= f.password_field :password, { class: 'form-control', autocomplete: "new-password" } %>
+          <i class="text-muted">(leave blank if you don't want to change it)</i>
+        </div>
+
+        <div class="col-md-6">
+          <%= f.label :password_confirmation, { class: 'form-label' } %>
+          <%= f.password_field :password_confirmation, { class: 'form-control', autocomplete: "new-password" } %>
+        </div>
+      </div>
+
+      <div class="actions mt-2">
+        <%= f.submit "Update", { class: 'btn btn-primary mb-3' } %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

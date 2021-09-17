@@ -40,7 +40,7 @@
           <div class="col-sm-4 offset-md-1 py-4">
             <ul class="list-unstyled">
               <% if admin_signed_in? %>
-                <%= link_to 'Edit Account', edit_admin_password_path, { class: "text-white header-link" } %><br>
+                <%= link_to 'Edit Account', edit_admins_admin_path(current_admin), { class: "text-white header-link" } %><br>
                 <%= link_to 'Log out', destroy_admin_session_path, { method: :delete, class: "text-white header-link" } %>
               <% elsif user_signed_in? %>
                 <div class="row">
