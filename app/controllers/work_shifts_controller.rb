@@ -75,7 +75,7 @@ class WorkShiftsController < ApplicationController
   end
 
   def reopen
-    @work_shift.reopen!
+    @work_shift.reopen! if !has_open_work_shift?
     respond_to do |format|
       format.html { redirect_to work_shifts_path, notice: 'Work shift was successfully reopened.' }
       format.json { render :show, status: :ok, location: @work_shift }

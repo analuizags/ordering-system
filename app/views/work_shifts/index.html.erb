@@ -23,6 +23,7 @@
           <% if @work_shifts.count > 0 %>
 
             <% @work_shifts.each do |work_shift| %>
+              <% disabled = has_open_work_shift? ? 'disabled' : nil %>
               <tr>
                 <td>#<%= work_shift.id %></td>
                 <td><%= work_shift.name %></td>
@@ -36,7 +37,7 @@
                     </td>
                   <% else %>
                     <td> 
-                      <%= link_to 'Reopen', reopen_work_shift_path(work_shift), { class: 'btn btn-primary btn-sm', data: { 
+                      <%= link_to 'Reopen', reopen_work_shift_path(work_shift), { class: "btn btn-primary btn-sm #{disabled}", data: { 
                           confirm: 'This will allow you to enter new orders for that work shift. Are you sure?' } } %>
                     </td>
                 <% end %>
