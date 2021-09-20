@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
 
   def index
     # @orders = filter_orders.includes([:work_shift, :products])
-    @orders = filter_orders.page(params[:page]).per(20)
+    @orders = filter_orders.to_the(current_work_shift.try(:id)).page(params[:page]).per(20)
   end
 
   def show
@@ -111,7 +111,7 @@ class OrdersController < ApplicationController
   end
 
   def kitchen
-    @orders = filter_orders.registered.kitchen
+    @orders = filter_orders.to_the(current_work_shift.try(:id)).registered.kitchen
   end
 
   def report
@@ -163,7 +163,7 @@ class OrdersController < ApplicationController
     end
 
     def current_orders
-      Order.to_the(current_work_shift.try(:id))
+      Order.joins(:work_shift).where(work_shifts: { restaurant_id: current_restaurant.try(:id) })
     end
 
     def filter_orders
