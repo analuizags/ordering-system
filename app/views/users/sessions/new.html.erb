@@ -17,6 +17,8 @@
         <div>
           <%= f.check_box :remember_me %>
           <%= f.label :remember_me %>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <%= link_to "Login as admin", admin_session_path, { class:"link-secondary" } %>
         </div>
       <% end %>
       <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
@@ -27,6 +29,5 @@
     </div>
 
     <%= f.submit "Sign in", { class:"w-100 btn btn-lg btn-primary" } %>
-    <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
   <% end %>
 </main>
