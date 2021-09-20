@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
 
   def index
     # @orders = filter_orders.includes([:work_shift, :products])
-    @orders = filter_orders
+    @orders = filter_orders.page(params[:page]).per(20)
   end
 
   def show
@@ -117,6 +117,8 @@ class OrdersController < ApplicationController
   def report
     # @orders = filter_orders.includes([:work_shift, :products])
     @orders = filter_orders
+    @dash_orders = @orders
+    @orders = @orders.page(params[:page]).per(20)
   end
 
   private

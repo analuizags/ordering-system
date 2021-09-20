@@ -1,6 +1,6 @@
 <div class="row justify-content-md-center g-4 mb-5">
-  <% orders = @orders.unscope(:order).select("orders.status, count(orders.id)").group(:status).order(status: :desc).uniq %>
-  <% total = @orders.count %>
+  <% orders = @dash_orders.unscope(:order).select("orders.status, count(orders.id)").group(:status).order(status: :desc).uniq %>
+  <% total = @dash_orders.count %>
 
   <div class="col-sm-auto">
     <ul class="list-group list-group-horizontal">
@@ -33,9 +33,9 @@
 
 <div class="row mb-5">
   <%
-    billing = @orders.unscope(:order).group_by_day(:created_at).count
+    billing = @dash_orders.unscope(:order).group_by_day(:created_at).count
 
-    values = @orders.unscope(:order)
+    values = @dash_orders.unscope(:order)
                   .select("DATE(orders.created_at) AS date, sum(products.price_cents*order_products.quantity) as price_cents")
                   .joins(:products)
                   .group("orders.created_at")
@@ -70,7 +70,7 @@
 
 <div class="row justify-content-evenly g-2">
   <div class="col-lg-5">
-    <% datas = @orders.unscope(:order)
+    <% datas = @dash_orders.unscope(:order)
                       .select("products.name, count(products.id)")
                       .joins(:products)
                       .group("products.id").order("products.name")
@@ -84,7 +84,7 @@
     <%= pie_chart(series[0], options) %>
   </div>
   <div class="col-lg-5">
-    <% datas = @orders.unscope(:order)
+    <% datas = @dash_orders.unscope(:order)
                       .select("categories.name, count(categories.id)")
                       .joins(:products)
                       .joins("INNER JOIN categories ON products.category_id = categories.id")
@@ -105,7 +105,7 @@
 
 <div class="row mb-5">
   <%
-    orders = @orders.unscope(:order).group_by_hour_of_day(:created_at).count
+    orders = @dash_orders.unscope(:order).group_by_hour_of_day(:created_at).count
 
     series = [{ name: "Orders", data: orders }]
     options = {
