@@ -1,0 +1,119 @@
+<div class="row justify-content-md-center g-4 mb-5">
+  <% orders = @orders.unscope(:order).select("orders.status, count(orders.id)").group(:status).order(status: :desc).uniq %>
+  <% total = @orders.count %>
+
+  <div class="col-sm-auto">
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item text-center">
+        <h5 class="mb-1"><%= total %></h5>
+        <small>Total</small>
+      </li>
+      <li class="list-group-item text-center">
+        <h5 class="mb-1"><i class="bi bi-bar-chart-fill"></i></h5>
+        <small>100%</small>
+      </li>
+    </ul>
+  </div>
+
+  <% orders.each do |order| %>
+    <div class="col-sm-auto">
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item text-center">
+          <h5 class="mb-1"><%= order.count %></h5>
+          <small><%= order.status.humanize %></small>
+        </li>
+        <li class="list-group-item text-center">
+          <h5 class="mb-1"><i class="bi bi-bar-chart-fill"></i></h5>
+          <small><%= order.count*100/total %>%</small>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+<div class="row mb-5">
+  <%
+    billing = @orders.unscope(:order).group_by_day(:created_at).count
+
+    values = @orders.unscope(:order)
+                  .select("DATE(orders.created_at) AS date, sum(products.price_cents*order_products.quantity) as price_cents")
+                  .joins(:products)
+                  .group("orders.created_at")
+  
+    values_hash = {}
+    values.each { |order| values_hash[order.date] = humanized_money Money.new(order.price_cents, Product.new.price.currency.iso_code) }
+
+    billing.each do |k, v|
+      if values_hash.keys.include?(k)
+        billing[k] = values_hash[k]
+      else
+        billing[k] = 0
+      end
+    end
+
+    series = [{ name: "Billing", data: billing }]
+  %>
+​ <% options = {
+      title: 'Billing per Day',
+      xtitle: 'Days',
+      ytitle: 'Amount (€)',
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+      }
+    } %>
+​
+  <%= area_chart(series, options) %>
+</div>
+
+<div class="row justify-content-evenly g-2">
+  <div class="col-lg-5">
+    <% datas = @orders.unscope(:order)
+                      .select("products.name, count(products.id)")
+                      .joins(:products)
+                      .group("products.id").order("products.name")
+    series = []
+    series = datas.map { |data| series << { name: data.name, data: data.count } }
+    options = {
+      title: 'Products',
+      legend: 'left'
+    } %>
+    ​
+    <%= pie_chart(series[0], options) %>
+  </div>
+  <div class="col-lg-5">
+    <% datas = @orders.unscope(:order)
+                      .select("categories.name, count(categories.id)")
+                      .joins(:products)
+                      .joins("INNER JOIN categories ON products.category_id = categories.id")
+                      .group("categories.id").order("categories.name")
+    series = []
+    series = datas.map { |data| series << { name: data.name, data: data.count } }
+    options = {
+      title: 'Categories',
+      legend: 'left',
+      markers: {
+        size: 3
+      }
+    } %>
+    ​
+    <%= pie_chart(series[0], options) %>
+  </div>
+</div>
+
+<div class="row mb-5">
+  <%
+    orders = @orders.unscope(:order).group_by_hour_of_day(:created_at).count
+
+    series = [{ name: "Orders", data: orders }]
+    options = {
+      title: 'Orders per Hour',
+      xtitle: 'Hours',
+      ytitle: 'Quantity'
+    }
+  %>
+​
+  <%= column_chart(series, options) %>
+</div>

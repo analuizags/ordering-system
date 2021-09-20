@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   before_action :load_products, only: [:new, :edit, :update, :create]
   before_action :load_tables, only: [:new, :edit, :update, :create]
   before_action :load_categories, only: [:new, :edit, :update, :create]
-  before_action :load_domains, only: [:index, :kitchen]
+  before_action :load_domains, only: [:index, :kitchen, :report]
   before_action :authenticate_user!
 
   def index
@@ -111,8 +111,12 @@ class OrdersController < ApplicationController
   end
 
   def kitchen
-    # @orders = filter_orders.includes([:work_shift, :products])
     @orders = filter_orders.registered.kitchen
+  end
+
+  def report
+    # @orders = filter_orders.includes([:work_shift, :products])
+    @orders = filter_orders
   end
 
   private
@@ -123,6 +127,8 @@ class OrdersController < ApplicationController
       @domains[:products] = load_products.map { |product| [product.name, product.id] }
       @domains[:work_shifts] = load_work_shift_names.map { |work_shift| [work_shift, work_shift] }
       @domains[:statuses] = [['Registered', 'registered'], ['Closed','closed'], ['Canceled', 'canceled']]
+
+      # @domains[:statuses] = [Order.unscope(:order).select(:status).order(status: :desc).uniq]
     end
 
     def load_products

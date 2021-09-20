@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   end
 
   get 'kitchen', to: 'orders#kitchen'
+  get 'report', to: 'orders#report'
 
   resources :work_shifts, except: [:show, :destroy] do
     member do

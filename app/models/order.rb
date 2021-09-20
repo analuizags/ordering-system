@@ -22,7 +22,7 @@ class Order < ActiveRecord::Base
   scope :making, -> { joins(:order_products)
                       .where("order_products.making != 0").uniq }
   scope :done, -> { joins(:order_products)
-                      .where("order_products.done != 0").uniq }
+                    .where("order_products.done != 0").uniq }
 
 
   def reopen!
