@@ -31,14 +31,16 @@
   <% end %>
 </div>
 
+<!-- Gráfico de linha sobre faturamento no mês -->
 <div class="row mb-5">
   <%
     billing = @dash_orders.unscope(:order).group_by_day(:created_at).count
 
     values = @dash_orders.unscope(:order)
-                  .select("DATE(orders.created_at) AS date, sum(products.price_cents*order_products.quantity) as price_cents")
-                  .joins(:products)
-                  .group("orders.created_at")
+                         .select("DATE(orders.created_at) AS date, sum(products.price_cents*order_products.quantity) as price_cents")
+                         .joins(:products)
+                         .where("orders.status != 'canceled'")
+                         .group("orders.created_at")
   
     values_hash = {}
     values.each { |order| values_hash[order.date] = humanized_money Money.new(order.price_cents, Product.new.price.currency.iso_code) }
@@ -68,11 +70,30 @@
   <%= area_chart(series, options) %>
 </div>
 
+<!-- Gráfico de barra sobre quantidade de pedidos por hora -->
+<div class="row mb-5">
+  <%
+    orders = @dash_orders.unscope(:order).where("orders.status != 'canceled'").group_by_hour_of_day(:created_at).count
+
+    series = [{ name: "Orders", data: orders }]
+    options = {
+      title: 'Orders per Hour',
+      xtitle: 'Hours',
+      ytitle: 'Quantity'
+    }
+  %>
+​
+  <%= column_chart(series, options) %>
+</div>
+
+<!-- Gráficos de pizza sobre quantidade de produtos vendidos -->
 <div class="row justify-content-evenly g-2">
   <div class="col-lg-5">
     <% datas = @dash_orders.unscope(:order)
                       .select("products.name, count(products.id)")
                       .joins(:products)
+                      .joins("INNER JOIN categories ON products.category_id = categories.id")
+                      .where(categories: { active: true }).where(products: { active: true })
                       .group("products.id").order("products.name")
     series = []
     series = datas.map { |data| series << { name: data.name, data: data.count } }
@@ -88,6 +109,7 @@
                       .select("categories.name, count(categories.id)")
                       .joins(:products)
                       .joins("INNER JOIN categories ON products.category_id = categories.id")
+                      .where(categories: { active: true }).where(products: { active: true })
                       .group("categories.id").order("categories.name")
     series = []
     series = datas.map { |data| series << { name: data.name, data: data.count } }
@@ -101,19 +123,4 @@
     ​
     <%= pie_chart(series[0], options) %>
   </div>
-</div>
-
-<div class="row mb-5">
-  <%
-    orders = @dash_orders.unscope(:order).group_by_hour_of_day(:created_at).count
-
-    series = [{ name: "Orders", data: orders }]
-    options = {
-      title: 'Orders per Hour',
-      xtitle: 'Hours',
-      ytitle: 'Quantity'
-    }
-  %>
-​
-  <%= column_chart(series, options) %>
 </div>

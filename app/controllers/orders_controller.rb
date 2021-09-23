@@ -140,7 +140,8 @@ class OrdersController < ApplicationController
     def load_categories
       @categories = Product.to_the(current_restaurant.try(:id))
                            .joins(:category).select("categories.id, categories.name")
-                           .where(categories: {active: true}).uniq.order("categories.name")
+                           .where(categories: { active: true }).where(products: { active: true })
+                           .uniq.order("categories.name")
     end
 
     # TODO: retornar um hash com ID e name
@@ -158,7 +159,7 @@ class OrdersController < ApplicationController
 
     def load_work_shift_names
       names = []
-      (1..4).each {|t| names << "Work Shift #{sprintf('%02d', t)}"}
+      (1..2).each {|t| names << "Work Shift #{sprintf('%02d', t)}"}
       names
     end
 
