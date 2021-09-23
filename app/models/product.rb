@@ -5,6 +5,8 @@ class Product < ActiveRecord::Base
 
   monetize :price_cents
 
+  before_save :name_humanize
+
   validates :name, :category, presence: true
   validates :price_cents, numericality: { greater_than: 0 }
 
@@ -12,6 +14,10 @@ class Product < ActiveRecord::Base
   scope :active, -> { joins(:category).where(active: true).where(categories: { active: true }) }
   scope :deactivate, -> { joins(:category).where("products.active IS FALSE OR categories.active IS FALSE" ) }
   scope :default_order, -> { joins(:category).order("categories.name, products.name") }
+
+  def name_humanize
+    self.name = self.name.humanize.titleize
+  end
 
   def activate!
     update_attributes({ active: true })

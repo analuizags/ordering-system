@@ -85,12 +85,10 @@ class WorkShiftsController < ApplicationController
   private
 
     def set_work_shift_name(time)
-      if time.to_time >= "17:00:00".to_time || time.to_time < "04:00:00".to_time
-        "Work Shift 03"
-      elsif time >= "12:00:00".to_time
-        "Work Shift 02"
-      elsif time >= "04:00:00".to_time
+      if time.to_time >= "07:00:00".to_time || time.to_time < "16:00:00".to_time
         "Work Shift 01"
+      else
+        "Work Shift 02"
       end
     end
 
