@@ -47,20 +47,10 @@
           <div class="accordion-body">
             <ul class="list-group">
               <% order.order_products.each do |order_product| %>
-                <% registered = order_product.quantity - order_product.making - order_product.done %>
-                <% percentage_registered = registered == 0 ? 0 : (100*order_product.done)/registered %>
-                <% percentage_making = (100*order_product.making)/order_product.quantity %>
-                <% percentage_done = (100*order_product.done)/order_product.quantity %>
-
-                <li class="list-group-item d-flex justify-content-between align-items-start">
+                <li class="list-group-item d-flex justify-content-between align-items-start" <%= bg_style %>>
                   <div class="ms-2 me-3 w-100 <%= muted %>">
                     <div class="fw-bold me-1">
                       <%= order_product.product.name %> - <%= humanized_money_with_symbol order_product.product.price %>
-                    </div>
-
-                    <div class="progress w-25 <%= 'mb-2' unless order_product.note.blank? %>" style="height: 2px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: <%= percentage_done %>%"
-                          aria-valuenow="<%= percentage_done %>" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <%= order_product.note %>
                   </div>
