@@ -42,9 +42,9 @@
               <%= date_field_tag(:before, params[:before] ? params[:before] : nil, { class:"form-control" }) %>
             </div>
             <div class="col-md-2 align-self-end">
-              <%= submit_tag "Search", { class: 'btn btn-primary' } %>
+              <%= submit_tag "Search", { class: 'btn btn-secondary' } %>
               <%= link_to report_path, { class: 'btn btn-light', title: "Reset" } do %>
-                <i class='bi bi-x-lg'></i>
+                <i class='bi bi-x-lg text-secondary'></i>
               <% end %>
             </div>
           </div>
