@@ -28,7 +28,7 @@
                 <h5 class="fw-bold mb-2 <%= muted %>">Order #<%= order.id %></h5>
 
                 <% total = 0 %>
-                <% order.products.each {|p| total += p.price } %>
+                <% order.order_products.each {|op| total += op.product.price*op.quantity } %>
                 <p class="m-0 <%= muted %>"><%= order.table %>, <%= order.status.humanize %>, Total: <%= currency_symbol %><%= total %></p>
               </div>
 
